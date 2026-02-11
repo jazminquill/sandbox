@@ -7,14 +7,16 @@ This repo supports content creation for **The Fabulous** (thefabulous.co), a wel
 - **Writer:** Jaz (jazminquill)
 - **Role:** Content writer for The Fabulous app
 
-## Key Reference Documents
-Check the `resources/` folder for detailed guidelines:
+## Knowledge Base — `resources/` folder
+**At the start of every session, read ALL files in `resources/`.**
+This is a growing knowledge base. Jaz will drop new files here over time — PDFs, guidelines, examples, research, templates. Always check for new additions and read them before doing any work.
+
+Current expected files include:
 - `Fabulous Mini Game Structures copy.pdf` — Structure and rules for interactive mini-games
 - `Fabulous Multi-Step Letters Guidelines.pdf` — How to write multi-step motivational letters
 - `Fabulous Paged Content.pdf` — Guidelines for paged/scrollable content format
 - `Writers' Template.pdf` — Standard writing template for Fabulous content
-
-**Always review these documents before creating any new content.**
+- `research-wellness-app-landscape.md` — Industry research and Fabulous app deep dive
 
 ## Content Team Structure (from Google Drive)
 The Content Team organizes work into these categories:
