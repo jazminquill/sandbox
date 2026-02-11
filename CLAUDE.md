@@ -16,7 +16,30 @@ Check the `resources/` folder for detailed guidelines:
 
 **Always review these documents before creating any new content.**
 
-## The Fabulous App — Content Types
+## Content Team Structure (from Google Drive)
+The Content Team organizes work into these categories:
+
+| Category | Description |
+|---|---|
+| **Journeys** | Multi-week structured habit-building programs |
+| **Coaching** | Audio coaching sessions and series |
+| **Challenges** | User challenges and engagement activities |
+| **Guides** | Educational guide content |
+| **Habits** | Habit-specific content |
+| **Quizzes** | Interactive quiz content |
+| **Summaries** | Summary/recap content |
+| **App - Ambiance** | Ambient sounds and atmosphere content |
+| **BGM - Immersive Mode** | Background music for immersive experiences |
+| **Zen Meditations** | Meditation content |
+| **Hypnosis** | Hypnosis/deep relaxation content |
+| **Language Learning** | Language learning content |
+| **Experiments** | Experimental/test content |
+| **Translations** | Content localization |
+| **Website** | Web content |
+
+Additional resources: A Template Folder, Associate Writer Resources, AI Resources
+
+## The Fabulous App — Content Types (Detailed)
 
 ### 1. Journeys
 - Multi-week structured programs centered on themes (sleep, focus, energy, weight loss, anxiety)
@@ -55,6 +78,27 @@ Check the `resources/` folder for detailed guidelines:
 - Morning, Afternoon, and Evening ritual blocks
 - Start with small keystone habits (e.g., drinking water)
 - Gradually layer in new habits as confidence builds
+
+### 8. Challenges
+- Time-limited engagement activities for users
+
+### 9. Quizzes
+- Interactive quiz-based content for education and engagement
+
+### 10. Guides
+- Educational guide content on wellness topics
+
+### 11. Zen Meditations
+- Meditation scripts and guided relaxation content
+
+### 12. Hypnosis
+- Hypnosis/deep relaxation scripts
+
+### 13. Ambiance & BGM
+- Ambient sound design and background music for immersive experiences
+
+### 14. Summaries
+- Recap/summary content for sessions and journeys
 
 ## Writing Style & Tone
 - **Science-backed:** Content is rooted in behavioral economics and psychology
