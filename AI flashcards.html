@@ -583,30 +583,41 @@
         }
 
         const sections = {
-            "What is AI?": { start: 0, end: 6, next: "How AI Talks" },
-            "How AI Talks": { start: 7, end: 12, next: "Making AI Smarter" },
-            "Making AI Smarter": { start: 13, end: 18, next: "Speed & Limits" },
-            "Speed & Limits": { start: 19, end: 25, next: "Building Websites" },
-            "Building Websites": { start: 26, end: 32, next: "Developer Tools" },
-            "Developer Tools": { start: 33, end: 42, next: "Running Code" },
-            "Running Code": { start: 43, end: 50, next: "Data & Files" },
-            "Data & Files": { start: 51, end: 57, next: "Claude World" },
-            "Claude World": { start: 58, end: 65, next: null }
+            "Claude World": { start: 0, end: 7, next: "What is AI?" },
+            "What is AI?": { start: 8, end: 14, next: "How AI Talks" },
+            "How AI Talks": { start: 15, end: 20, next: "Making AI Smarter" },
+            "Making AI Smarter": { start: 21, end: 26, next: "Speed & Limits" },
+            "Speed & Limits": { start: 27, end: 33, next: "Building Websites" },
+            "Building Websites": { start: 34, end: 40, next: "Developer Tools" },
+            "Developer Tools": { start: 41, end: 50, next: "Running Code" },
+            "Running Code": { start: 51, end: 58, next: "Data & Files" },
+            "Data & Files": { start: 59, end: 65, next: null }
         };
         
         const congratsCards = [
-            { afterIndex: 6, prevSection: "What is AI?", nextSection: "How AI Talks", emoji: "🎉", message: "Awesome! You now understand the basics of what AI is and how it works. Up next: How AI Talks!" },
-            { afterIndex: 12, prevSection: "How AI Talks", nextSection: "Making AI Smarter", emoji: "🚀", message: "Great job! You know how computers communicate now. Up next: Making AI Smarter!" },
-            { afterIndex: 18, prevSection: "Making AI Smarter", nextSection: "Speed & Limits", emoji: "💪", message: "Fantastic! You've learned how to supercharge AI. Up next: Speed & Limits!" },
-            { afterIndex: 25, prevSection: "Speed & Limits", nextSection: "Building Websites", emoji: "⚡", message: "Nice work! You understand AI performance metrics. Up next: Building Websites!" },
-            { afterIndex: 32, prevSection: "Building Websites", nextSection: "Developer Tools", emoji: "🏗️", message: "Excellent! You know how websites work now. Up next: Developer Tools!" },
-            { afterIndex: 42, prevSection: "Developer Tools", nextSection: "Running Code", emoji: "🛠️", message: "Amazing progress! You've mastered developer tools. Up next: Running Code!" },
-            { afterIndex: 50, prevSection: "Running Code", nextSection: "Data & Files", emoji: "🎮", message: "Well done! You understand environments and deployment. Up next: Data & Files!" },
-            { afterIndex: 57, prevSection: "Data & Files", nextSection: "Claude World", emoji: "✨", message: "You're doing great! Now let's learn Claude-specific terminology!" },
-            { afterIndex: 65, prevSection: "Claude World", nextSection: null, emoji: "🏆", isVictory: true, message: "🎊 CONGRATULATIONS! 🎊 You've completed all sections! You now have the foundational knowledge to understand AI conversations and work with Claude. You're ready to dive into the world of AI and development!" }
+            { afterIndex: 7, prevSection: "Claude World", nextSection: "What is AI?", emoji: "🎉", message: "Great start! You know the Claude tools. Up next: What is AI?" },
+            { afterIndex: 14, prevSection: "What is AI?", nextSection: "How AI Talks", emoji: "🚀", message: "Awesome! You understand AI basics. Up next: How AI Talks!" },
+            { afterIndex: 20, prevSection: "How AI Talks", nextSection: "Making AI Smarter", emoji: "💪", message: "Great job! You know how computers communicate. Up next: Making AI Smarter!" },
+            { afterIndex: 26, prevSection: "Making AI Smarter", nextSection: "Speed & Limits", emoji: "⚡", message: "Fantastic! You've learned to supercharge AI. Up next: Speed & Limits!" },
+            { afterIndex: 33, prevSection: "Speed & Limits", nextSection: "Building Websites", emoji: "🏗️", message: "Nice work! You understand performance metrics. Up next: Building Websites!" },
+            { afterIndex: 40, prevSection: "Building Websites", nextSection: "Developer Tools", emoji: "🛠️", message: "Excellent! You know how websites work. Up next: Developer Tools!" },
+            { afterIndex: 50, prevSection: "Developer Tools", nextSection: "Running Code", emoji: "🎮", message: "Amazing progress! You've mastered dev tools. Up next: Running Code!" },
+            { afterIndex: 58, prevSection: "Running Code", nextSection: "Data & Files", emoji: "✨", message: "Well done! You understand environments. Last section: Data & Files!" },
+            { afterIndex: 65, prevSection: "Data & Files", nextSection: null, emoji: "🏆", isVictory: true, message: "🎊 CONGRATULATIONS! 🎊 You've completed all sections! You now have the foundational knowledge to understand AI conversations and work with Claude. You're ready to dive into the world of AI and development!" }
         ];
         const terms = [
-            // Section 1: What is AI? (0-6)
+            // Section 1: Claude World (0-7)
+            { section: "Claude World", acronym: "Artifact", definition: "Interactive content Claude creates", usage: "Like a mini-app Claude builds for you - games, calculators, charts that you can use and edit", theme: "theme-quirks", icon: "🎨" },
+            { section: "Claude World", acronym: "Skills", definition: "Claude's extended capabilities", usage: "Special powers Claude can use - like searching the web, creating files, or analyzing data", theme: "theme-quirks", icon: "⚡" },
+            { section: "Claude World", acronym: "Projects", definition: "Workspaces with custom knowledge", usage: "Like giving Claude a personalized folder with your docs, style guide, and context it remembers", theme: "theme-quirks", icon: "📁" },
+            { section: "Claude World", acronym: "Styles", definition: "Claude's response personality", usage: "Choose how Claude talks - formal, casual, concise, or explanatory", theme: "theme-quirks", icon: "🎭" },
+            { section: "Claude World", acronym: "Cowork", definition: "Claude's desktop automation", usage: "Claude that can control your computer - move files, organize folders, automate tasks", theme: "theme-quirks", icon: "🖥️" },
+            { section: "Claude World", acronym: "Code", definition: "Claude's terminal companion", usage: "Claude in your command line - helps you code, debug, and run terminal commands", theme: "theme-quirks", icon: "💻" },
+            { section: "Claude World", acronym: "Memory", definition: "What Claude remembers about you", usage: "Details Claude saves across chats - your preferences, past projects, and frequently used info", theme: "theme-quirks", icon: "🧠" },
+            { section: "Claude World", isExplainer: true, theme: "theme-quirks", title: "🎈 The Claude Family", emoji: "👨‍👩‍👧‍👦", text: "Think of Claude as a helpful assistant with different tools! Regular Claude chats with you. Claude with ARTIFACTS builds interactive things like games. Claude with SKILLS can search the web or create files. PROJECTS give Claude your custom knowledge base. COWORK is Claude controlling your computer to help organize. CODE is Claude in your terminal helping you program. MEMORY helps Claude remember your preferences!" },
+            
+            // Section 2: What is AI? (8-14)
+            // Section 2: What is AI? (8-14)
             { section: "What is AI?", acronym: "LLM", definition: "Large Language Model", usage: "A computer brain trained by reading billions of books and websites to chat like a human", theme: "theme-fundamentals", icon: "🧠" },
             { section: "What is AI?", acronym: "Model", definition: "The AI brain itself", usage: "Like a really smart robot brain that learned patterns from lots of examples", theme: "theme-fundamentals", icon: "🤖" },
             { section: "What is AI?", acronym: "Training", definition: "How AI learns", usage: "Feeding the AI millions of examples so it learns patterns, like teaching a dog tricks", theme: "theme-fundamentals", icon: "📚" },
@@ -615,7 +626,8 @@
             { section: "What is AI?", acronym: "Token", definition: "Chunks AI reads and writes", usage: "Words broken into pieces - 'hamburger' might be 'ham' + 'burger'. AI thinks in tokens. Also how you're charged - more tokens = higher cost!", theme: "theme-fundamentals", icon: "🍔" },
             { section: "What is AI?", isExplainer: true, theme: "theme-fundamentals", title: "🎈 How AI Actually Works", emoji: "🦜", text: "Imagine AI is like a really smart parrot that read every book in the world. You ask it a question (that's a PROMPT), and it predicts what words should come next based on everything it read (that's INFERENCE). It learned by reading millions of times (TRAINING). The parrot doesn't understand like you do - it's just really, really good at guessing what words fit together!" },
             
-            // Section 2: How AI Talks (7-12)
+            // Section 3: How AI Talks (15-20)
+            // Section 3: How AI Talks (15-20)
             { section: "How AI Talks", acronym: "API", definition: "Application Programming Interface", usage: "Like a waiter - you ask for something, they bring it from the kitchen (another computer)", theme: "theme-communication", icon: "☕" },
             { section: "How AI Talks", acronym: "REST", definition: "Representational State Transfer", usage: "Standard way computers ask each other for stuff - like saying 'please' and 'thank you'", theme: "theme-communication", icon: "🙏" },
             { section: "How AI Talks", acronym: "JSON", definition: "JavaScript Object Notation", usage: "Way to organize information with labels, like putting food in labeled containers", theme: "theme-communication", icon: "🏷️" },
@@ -623,7 +635,8 @@
             { section: "How AI Talks", acronym: "MCP", definition: "Model Context Protocol", usage: "Lets AI use tools like opening your email or calendar, like giving it hands to help you", theme: "theme-communication", icon: "🛠️" },
             { section: "How AI Talks", isExplainer: true, theme: "theme-communication", title: "🎈 The Internet Restaurant", emoji: "🍽️", text: "The internet is like a giant restaurant. Your computer is you sitting at a table. The API is the waiter who takes your order to the kitchen (another computer). You write your order in JSON format (like a menu form). The waiter goes to the ENDPOINT (the kitchen door) and brings back your food. REST is just the polite way everyone agrees to talk!" },
             
-            // Section 3: Making AI Smarter (13-18)
+            // Section 4: Making AI Smarter (21-26)
+            // Section 4: Making AI Smarter (21-26)
             { section: "Making AI Smarter", acronym: "RAG", definition: "Retrieval-Augmented Generation", usage: "AI looks up answers in your documents first, like checking your notes before answering", theme: "theme-smart-ai", icon: "📓" },
             { section: "Making AI Smarter", acronym: "Context", definition: "How much AI can remember at once", usage: "Like how many things you can hold in your arms - more context = remembers more of your conversation", theme: "theme-smart-ai", icon: "🤗" },
             { section: "Making AI Smarter", acronym: "Embedding", definition: "Converting text to numbers", usage: "Turning words into math so computers can compare meanings - 'dog' and 'puppy' get similar numbers", theme: "theme-smart-ai", icon: "🔢" },
@@ -631,7 +644,7 @@
             { section: "Making AI Smarter", acronym: "Fine-tuning", definition: "Customizing a trained model", usage: "Teaching an already-smart AI your specific style - like training a chef to make your family recipes", theme: "theme-smart-ai", icon: "🎯" },
             { section: "Making AI Smarter", isExplainer: true, theme: "theme-smart-ai", title: "🎈 Your Brain is a Library", emoji: "📚", text: "Imagine your brain is like a library. CONTEXT is how many books you can hold at once. EMBEDDINGS turn every book into a special number code. VECTORS help you find books that mean similar things. RAG is like hiring a librarian who finds the exact right books before answering your question. FINE-TUNING is adding your own special books to the library!" },
             
-            // Section 4: AI Performance (19-25)
+            // Section 5: Speed & Limits (27-33)
             { section: "Speed & Limits", acronym: "TTFT", definition: "Time To First Token", usage: "How fast the first word appears - like waiting for someone to start talking", theme: "theme-performance", icon: "⏱️" },
             { section: "Speed & Limits", acronym: "TPS", definition: "Tokens Per Second", usage: "How many words pop up each second - typing speed of the AI", theme: "theme-performance", icon: "⚡" },
             { section: "Speed & Limits", acronym: "TPM", definition: "Tokens Per Minute", usage: "Maximum words you can use per minute - like a budget of Scrabble tiles", theme: "theme-performance", icon: "🅰️" },
@@ -694,7 +707,18 @@
 
         const quizzes = [
             {
-                afterCard: 6,
+                afterCard: 7,
+                question: "Claude builds interactive things for you like games or charts. What is this called?",
+                hint: "Think about the creative things Claude makes that you can actually use and interact with",
+                options: [
+                    { text: "Artifact", correct: true, feedback: "Perfect! ARTIFACTS are the interactive mini-apps Claude creates - like calculators, games, or visualizations you can actually use and edit in real-time." },
+                    { text: "Skills", correct: false, feedback: "SKILLS are Claude's special powers like web search or file creation - not the interactive things Claude builds. ARTIFACT is what we call the interactive content." },
+                    { text: "Projects", correct: false, feedback: "PROJECTS are workspaces where you give Claude custom knowledge and context. ARTIFACTS are the interactive things Claude creates within those conversations." },
+                    { text: "Styles", correct: false, feedback: "STYLES control how Claude talks (formal, casual, etc.), not what Claude creates. The interactive content is called an ARTIFACT." }
+                ]
+            },
+            {
+                afterCard: 14,
                 question: "You want to give AI your question. What do you call what you type?",
                 hint: "Think about the message you send to start a conversation with AI",
                 options: [
@@ -705,7 +729,7 @@
                 ]
             },
             {
-                afterCard: 12,
+                afterCard: 20,
                 question: "Your app needs to ask another computer for data. What carries that request?",
                 hint: "Remember the waiter metaphor - who carries your order to the kitchen?",
                 options: [
