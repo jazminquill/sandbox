@@ -751,8 +751,20 @@
             const flashcard = document.getElementById('flashcard');
             const quiz = document.getElementById('quiz');
             
+            // Check for quiz FIRST before checking congrats
+            const quizToShow = quizzes.find(q => q.afterCard === currentIndex);
+            
+            if (quizToShow && !isQuizMode) {
+                isQuizMode = true;
+                flashcard.classList.add('hidden');
+                quiz.classList.remove('hidden');
+                showQuiz(quizToShow);
+                clearInterval(interval);
+                return;
+            }
+            
             // Check for congrats card
-            const congratsCard = congratsCards.find(c => c.afterIndex === currentIndex - 1);
+            const congratsCard = congratsCards.find(c => c.afterIndex === currentIndex);
             
             if (congratsCard && !isQuizMode) {
                 flashcard.classList.remove('hidden', 'explainer-card');
@@ -775,15 +787,7 @@
                 return;
             }
             
-            const quizToShow = quizzes.find(q => q.afterCard === currentIndex - 1);
-            
-            if (quizToShow && !isQuizMode) {
-                isQuizMode = true;
-                flashcard.classList.add('hidden');
-                quiz.classList.remove('hidden');
-                showQuiz(quizToShow);
-                clearInterval(interval);
-            } else if (!isQuizMode) {
+            if (!isQuizMode) {
                 flashcard.classList.remove('hidden', 'congrats-card', 'victory-card');
                 quiz.classList.add('hidden');
                 
