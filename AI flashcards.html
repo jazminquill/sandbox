@@ -27,6 +27,19 @@
             background-image: 
                 repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
                 repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
+            position: relative;
+        }
+        
+        body::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
         }
         
         /* Color themes */
@@ -56,9 +69,77 @@
             animation: cardAppear 0.5s ease;
         }
         
-        .card.explainer-card {
-            background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
-            border-color: #f59e0b;
+        .card.congrats-card {
+            background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+            border-color: #16a34a;
+            box-shadow: 
+                0 4px 0 #15803d,
+                0 8px 0 #166534,
+                0 12px 20px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.4),
+                0 0 40px rgba(34, 197, 94, 0.5);
+            animation: cardSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), victoryPulse 2s ease-in-out infinite;
+        }
+        
+        @keyframes victoryPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+        
+        .card.congrats-card::before {
+            border-color: rgba(22, 163, 74, 0.4);
+        }
+        
+        .card.victory-card {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-color: #d97706;
+            box-shadow: 
+                0 4px 0 #b45309,
+                0 8px 0 #92400e,
+                0 12px 20px rgba(0,0,0,0.3),
+                inset 0 2px 0 rgba(255,255,255,0.4),
+                0 0 60px rgba(251, 191, 36, 0.8);
+            animation: cardSlideIn 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), victoryPulse 2s ease-in-out infinite;
+        }
+        
+        .card.victory-card::before {
+            border-color: rgba(217, 119, 6, 0.4);
+        }
+        
+        .congrats-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #065f46;
+            font-weight: 500;
+        }
+        
+        .victory-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #92400e;
+            font-weight: 500;
+        }
+        
+        .congrats-badge {
+            background: linear-gradient(135deg, #4ade80 0%, #22c55e 100%);
+            border-color: #16a34a;
+        }
+        
+        .victory-badge {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-color: #d97706;
+        }
+            background: linear-gradient(135deg, #7dd3fc 0%, #38bdf8 100%);
+            border-color: #0284c7;
+            box-shadow: 
+                0 8px 0 #0369a1,
+                0 8px 20px rgba(0,0,0,0.3);
+        }
+        
+        .card.explainer-card::before {
+            border-color: rgba(2, 132, 199, 0.4);
         }
         
         @keyframes cardAppear {
@@ -70,9 +151,10 @@
             content: '';
             position: absolute;
             inset: 8px;
-            border: 2px solid rgba(139, 90, 43, 0.3);
+            border: 2px solid rgba(255, 215, 0, 0.4);
             border-radius: 15px;
             pointer-events: none;
+            box-shadow: inset 0 0 20px rgba(255, 215, 0, 0.1);
         }
         
         .icon-container {
@@ -82,26 +164,99 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 6px 12px rgba(0,0,0,0.3)) drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+            animation: iconFloat 3s ease-in-out infinite;
+            position: relative;
+        }
+        
+        .icon-container::before {
+            content: '';
+            position: absolute;
+            inset: -10px;
+            background: radial-gradient(circle, rgba(255,215,0,0.2) 0%, transparent 70%);
+            border-radius: 50%;
+            animation: iconGlow 2s ease-in-out infinite alternate;
+        }
+        
+        @keyframes iconFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        @keyframes iconGlow {
+            from { opacity: 0.3; transform: scale(0.8); }
+            to { opacity: 0.6; transform: scale(1.1); }
+        }
+        
+        .section-header {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            right: 80px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 10;
         }
         
         .section-badge {
             display: inline-block;
             background: rgba(251, 146, 60, 0.9);
             color: white;
-            padding: 6px 14px;
+            padding: 8px 16px;
             border-radius: 20px;
             font-size: 11px;
             font-weight: 700;
             text-transform: uppercase;
             letter-spacing: 0.5px;
-            margin-bottom: 16px;
             border: 2px solid #ea580c;
+            align-self: flex-start;
+            animation: badgePulse 2s ease-in-out infinite;
+            box-shadow: 0 2px 8px rgba(234, 88, 12, 0.4);
+        }
+        
+        @keyframes badgePulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        .section-progress-bar {
+            width: 100%;
+            max-width: 200px;
+            height: 8px;
+            background: rgba(74, 52, 40, 0.3);
+            border-radius: 10px;
+            overflow: hidden;
+            border: 2px solid #4a3428;
+        }
+        
+        .section-progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #fbbf24 0%, #f59e0b 100%);
+            transition: width 0.5s ease;
+            border-radius: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .section-progress-fill::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.6), transparent);
+            animation: shimmer 2s infinite;
+        }
+        
+        @keyframes shimmer {
+            to { left: 200%; }
         }
         
         .explainer-badge {
-            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-            border-color: #d97706;
+            background: linear-gradient(135deg, #38bdf8 0%, #0ea5e9 100%);
+            border-color: #0284c7;
             font-size: 13px;
             padding: 8px 16px;
         }
@@ -136,7 +291,7 @@
             font-family: 'Inter', sans-serif;
             font-size: 18px;
             line-height: 1.8;
-            color: #92400e;
+            color: #075985;
             font-weight: 500;
         }
         
@@ -169,6 +324,12 @@
             display: flex;
             align-items: center;
             gap: 12px;
+            position: relative;
+        }
+        
+        .quiz-option:hover {
+            transform: translateX(4px);
+            box-shadow: 0 4px 0 #3a2818, 0 0 20px rgba(251, 191, 36, 0.4);
         }
         
         .quiz-option:active {
@@ -263,12 +424,18 @@
             font-weight: 700;
             font-family: 'Inter', sans-serif;
             transition: all 0.2s;
-            box-shadow: 0 4px 0 #3a2818;
+            box-shadow: 0 4px 0 #3a2818, 0 4px 8px rgba(0,0,0,0.2);
+            position: relative;
+        }
+        
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 0 #3a2818, 0 6px 12px rgba(0,0,0,0.3);
         }
         
         button:active {
-            transform: translateY(2px);
-            box-shadow: 0 2px 0 #3a2818;
+            transform: translateY(3px);
+            box-shadow: 0 1px 0 #3a2818;
         }
         
         .hint-btn {
@@ -283,6 +450,8 @@
         .progress {
             position: fixed;
             bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
             font-family: 'Press Start 2P', monospace;
             font-size: 10px;
             background: linear-gradient(135deg, #f5e6d3 0%, #e8d4ba 100%);
@@ -298,6 +467,7 @@
             right: 20px;
             display: flex;
             gap: 8px;
+            z-index: 11;
         }
         
         .controls button {
@@ -307,6 +477,23 @@
         
         .hidden {
             display: none;
+        }
+        
+        /* Confetti */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: #fbbf24;
+            position: absolute;
+            animation: confettiFall 3s linear;
+        }
+        
+        @keyframes confettiFall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
         }
         
         @media (max-width: 480px) {
@@ -342,8 +529,14 @@
     </style>
 </head>
 <body class="theme-fundamentals">
-    <div class="card" id="flashcard">
+    <div class="section-header">
         <div class="section-badge" id="sectionBadge">What is AI?</div>
+        <div class="section-progress-bar">
+            <div class="section-progress-fill" id="sectionProgressBar" style="width: 0%"></div>
+        </div>
+    </div>
+    
+    <div class="card" id="flashcard">
         <div class="icon-container" id="iconContainer"></div>
         <div class="acronym" id="acronym">LLM</div>
         <div class="definition" id="definition">Large Language Model</div>
@@ -361,8 +554,6 @@
         </div>
     </div>
     
-    <div class="progress" id="progress">1/58</div>
-    
     <div class="controls">
         <button onclick="prevItem()">←</button>
         <button onclick="togglePause()" id="pauseBtn">⏸</button>
@@ -371,9 +562,48 @@
 
     <script>
         function renderIcon(iconName, container) {
-            container.innerHTML = `<div style="font-size: 72px;">${iconName}</div>`;
+            container.innerHTML = `<div style="font-size: 72px; transition: transform 0.3s ease;" onmouseover="this.style.transform='scale(1.15) rotate(5deg)'" onmouseout="this.style.transform='scale(1) rotate(0deg)'">${iconName}</div>`;
         }
 
+        function createConfetti() {
+            const colors = ['#fbbf24', '#f59e0b', '#22c55e', '#3b82f6', '#ec4899', '#8b5cf6'];
+            for (let i = 0; i < 50; i++) {
+                setTimeout(() => {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'confetti';
+                    confetti.style.left = Math.random() * 100 + 'vw';
+                    confetti.style.background = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.animationDelay = Math.random() * 0.5 + 's';
+                    confetti.style.animationDuration = (Math.random() * 2 + 2) + 's';
+                    document.body.appendChild(confetti);
+                    setTimeout(() => confetti.remove(), 3500);
+                }, i * 30);
+            }
+        }
+
+        const sections = {
+            "What is AI?": { start: 0, end: 6, next: "How AI Talks" },
+            "How AI Talks": { start: 7, end: 12, next: "Making AI Smarter" },
+            "Making AI Smarter": { start: 13, end: 18, next: "Speed & Limits" },
+            "Speed & Limits": { start: 19, end: 25, next: "Building Websites" },
+            "Building Websites": { start: 26, end: 32, next: "Developer Tools" },
+            "Developer Tools": { start: 33, end: 42, next: "Running Code" },
+            "Running Code": { start: 43, end: 50, next: "Data & Files" },
+            "Data & Files": { start: 51, end: 57, next: "Claude World" },
+            "Claude World": { start: 58, end: 65, next: null }
+        };
+        
+        const congratsCards = [
+            { afterIndex: 6, prevSection: "What is AI?", nextSection: "How AI Talks", emoji: "🎉", message: "Awesome! You now understand the basics of what AI is and how it works. Up next: How AI Talks!" },
+            { afterIndex: 12, prevSection: "How AI Talks", nextSection: "Making AI Smarter", emoji: "🚀", message: "Great job! You know how computers communicate now. Up next: Making AI Smarter!" },
+            { afterIndex: 18, prevSection: "Making AI Smarter", nextSection: "Speed & Limits", emoji: "💪", message: "Fantastic! You've learned how to supercharge AI. Up next: Speed & Limits!" },
+            { afterIndex: 25, prevSection: "Speed & Limits", nextSection: "Building Websites", emoji: "⚡", message: "Nice work! You understand AI performance metrics. Up next: Building Websites!" },
+            { afterIndex: 32, prevSection: "Building Websites", nextSection: "Developer Tools", emoji: "🏗️", message: "Excellent! You know how websites work now. Up next: Developer Tools!" },
+            { afterIndex: 42, prevSection: "Developer Tools", nextSection: "Running Code", emoji: "🛠️", message: "Amazing progress! You've mastered developer tools. Up next: Running Code!" },
+            { afterIndex: 50, prevSection: "Running Code", nextSection: "Data & Files", emoji: "🎮", message: "Well done! You understand environments and deployment. Up next: Data & Files!" },
+            { afterIndex: 57, prevSection: "Data & Files", nextSection: "Claude World", emoji: "✨", message: "You're doing great! Now let's learn Claude-specific terminology!" },
+            { afterIndex: 65, prevSection: "Claude World", nextSection: null, emoji: "🏆", isVictory: true, message: "🎊 CONGRATULATIONS! 🎊 You've completed all sections! You now have the foundational knowledge to understand AI conversations and work with Claude. You're ready to dive into the world of AI and development!" }
+        ];
         const terms = [
             // Section 1: What is AI? (0-6)
             { section: "What is AI?", acronym: "LLM", definition: "Large Language Model", usage: "A computer brain trained by reading billions of books and websites to chat like a human", theme: "theme-fundamentals", icon: "🧠" },
@@ -381,8 +611,8 @@
             { section: "What is AI?", acronym: "Training", definition: "How AI learns", usage: "Feeding the AI millions of examples so it learns patterns, like teaching a dog tricks", theme: "theme-fundamentals", icon: "📚" },
             { section: "What is AI?", acronym: "Inference", definition: "When AI is actually being used", usage: "After training is done, this is the AI doing its job - like a trained dog performing tricks", theme: "theme-fundamentals", icon: "✨" },
             { section: "What is AI?", acronym: "Prompt", definition: "What you type to AI", usage: "Your question or instruction to the AI - like asking a friend for help", theme: "theme-fundamentals", icon: "💬" },
-            { section: "What is AI?", acronym: "Token", definition: "Chunks AI reads and writes", usage: "Words broken into pieces - 'hamburger' might be 'ham' + 'burger'. AI thinks in tokens.", theme: "theme-fundamentals", icon: "🧩" },
-            { section: "What is AI?", isExplainer: true, theme: "theme-fundamentals", title: "🎈 How AI Actually Works", text: "Imagine AI is like a really smart parrot that read every book in the world. You ask it a question (that's a PROMPT), and it predicts what words should come next based on everything it read (that's INFERENCE). It learned by reading millions of times (TRAINING). The parrot doesn't understand like you do - it's just really, really good at guessing what words fit together!" },
+            { section: "What is AI?", acronym: "Token", definition: "Chunks AI reads and writes", usage: "Words broken into pieces - 'hamburger' might be 'ham' + 'burger'. AI thinks in tokens.", theme: "theme-fundamentals", icon: "🍔" },
+            { section: "What is AI?", isExplainer: true, theme: "theme-fundamentals", title: "🎈 How AI Actually Works", emoji: "🦜", text: "Imagine AI is like a really smart parrot that read every book in the world. You ask it a question (that's a PROMPT), and it predicts what words should come next based on everything it read (that's INFERENCE). It learned by reading millions of times (TRAINING). The parrot doesn't understand like you do - it's just really, really good at guessing what words fit together!" },
             
             // Section 2: How AI Talks (7-12)
             { section: "How AI Talks", acronym: "API", definition: "Application Programming Interface", usage: "Like a waiter - you ask for something, they bring it from the kitchen (another computer)", theme: "theme-communication", icon: "☕" },
@@ -390,7 +620,7 @@
             { section: "How AI Talks", acronym: "JSON", definition: "JavaScript Object Notation", usage: "Way to organize information with labels, like putting food in labeled containers", theme: "theme-communication", icon: "🏷️" },
             { section: "How AI Talks", acronym: "Endpoint", definition: "The address where an API lives", usage: "Like a restaurant's street address - you need it to place an order", theme: "theme-communication", icon: "📍" },
             { section: "How AI Talks", acronym: "MCP", definition: "Model Context Protocol", usage: "Lets AI use tools like opening your email or calendar, like giving it hands to help you", theme: "theme-communication", icon: "🛠️" },
-            { section: "How AI Talks", isExplainer: true, theme: "theme-communication", title: "🎈 The Internet Restaurant", text: "The internet is like a giant restaurant. Your computer is you sitting at a table. The API is the waiter who takes your order to the kitchen (another computer). You write your order in JSON format (like a menu form). The waiter goes to the ENDPOINT (the kitchen door) and brings back your food. REST is just the polite way everyone agrees to talk!" },
+            { section: "How AI Talks", isExplainer: true, theme: "theme-communication", title: "🎈 The Internet Restaurant", emoji: "🍽️", text: "The internet is like a giant restaurant. Your computer is you sitting at a table. The API is the waiter who takes your order to the kitchen (another computer). You write your order in JSON format (like a menu form). The waiter goes to the ENDPOINT (the kitchen door) and brings back your food. REST is just the polite way everyone agrees to talk!" },
             
             // Section 3: Making AI Smarter (13-18)
             { section: "Making AI Smarter", acronym: "RAG", definition: "Retrieval-Augmented Generation", usage: "AI looks up answers in your documents first, like checking your notes before answering", theme: "theme-smart-ai", icon: "📓" },
@@ -398,7 +628,7 @@
             { section: "Making AI Smarter", acronym: "Embedding", definition: "Converting text to numbers", usage: "Turning words into math so computers can compare meanings - 'dog' and 'puppy' get similar numbers", theme: "theme-smart-ai", icon: "🔢" },
             { section: "Making AI Smarter", acronym: "Vector", definition: "A list of numbers representing meaning", usage: "Like GPS coordinates but for word meanings - helps AI find similar ideas", theme: "theme-smart-ai", icon: "📊" },
             { section: "Making AI Smarter", acronym: "Fine-tuning", definition: "Customizing a trained model", usage: "Teaching an already-smart AI your specific style - like training a chef to make your family recipes", theme: "theme-smart-ai", icon: "🎯" },
-            { section: "Making AI Smarter", isExplainer: true, theme: "theme-smart-ai", title: "🎈 Your Brain is a Library", text: "Imagine your brain is like a library. CONTEXT is how many books you can hold at once. EMBEDDINGS turn every book into a special number code. VECTORS help you find books that mean similar things. RAG is like hiring a librarian who finds the exact right books before answering your question. FINE-TUNING is adding your own special books to the library!" },
+            { section: "Making AI Smarter", isExplainer: true, theme: "theme-smart-ai", title: "🎈 Your Brain is a Library", emoji: "📚", text: "Imagine your brain is like a library. CONTEXT is how many books you can hold at once. EMBEDDINGS turn every book into a special number code. VECTORS help you find books that mean similar things. RAG is like hiring a librarian who finds the exact right books before answering your question. FINE-TUNING is adding your own special books to the library!" },
             
             // Section 4: AI Performance (19-25)
             { section: "Speed & Limits", acronym: "TTFT", definition: "Time To First Token", usage: "How fast the first word appears - like waiting for someone to start talking", theme: "theme-performance", icon: "⏱️" },
@@ -407,7 +637,7 @@
             { section: "Speed & Limits", acronym: "RPM", definition: "Requests Per Minute", usage: "How many questions you can ask per minute - like limits on raising your hand", theme: "theme-performance", icon: "🚦" },
             { section: "Speed & Limits", acronym: "Latency", definition: "Response delay", usage: "Waiting time between clicking and seeing results - like lag in video games", theme: "theme-performance", icon: "⏳" },
             { section: "Speed & Limits", acronym: "SSE", definition: "Server-Sent Events", usage: "Words appear one at a time as AI thinks, not all at once when done", theme: "theme-performance", icon: "💭" },
-            { section: "Speed & Limits", isExplainer: true, theme: "theme-performance", title: "🎈 Fast vs Slow AI", text: "Think of AI speed like different race cars. TTFT is how fast it starts moving. TPS is its top speed while racing. LATENCY is how long before it even gets to the starting line. TPM and RPM are like fuel limits - you can only go so far before refilling. SSE is like watching the race live on TV instead of waiting for a replay!" },
+            { section: "Speed & Limits", isExplainer: true, theme: "theme-performance", title: "🎈 Fast vs Slow AI", emoji: "🏎️", text: "Think of AI speed like different race cars. TTFT is how fast it starts moving. TPS is its top speed while racing. LATENCY is how long before it even gets to the starting line. TPM and RPM are like fuel limits - you can only go so far before refilling. SSE is like watching the race live on TV instead of waiting for a replay!" },
             
             // Section 5: Building Websites (26-32)
             { section: "Building Websites", acronym: "HTML", definition: "HyperText Markup Language", usage: "The skeleton of a website - the structure and bones, like the frame of a house", theme: "theme-websites", icon: "🏗️" },
@@ -416,7 +646,7 @@
             { section: "Building Websites", acronym: "Frontend", definition: "What you see and click", usage: "Everything visible in a website or app - buttons, images, text you interact with", theme: "theme-websites", icon: "🖼️" },
             { section: "Building Websites", acronym: "Backend", definition: "The behind-the-scenes server code", usage: "The hidden machinery doing the real work - database, logic, processing your requests", theme: "theme-websites", icon: "⚙️" },
             { section: "Building Websites", acronym: "Framework", definition: "Pre-built code structure", usage: "Like IKEA furniture instructions - a template that makes building faster", theme: "theme-websites", icon: "📐" },
-            { section: "Building Websites", isExplainer: true, theme: "theme-websites", title: "🎈 Building a House", text: "A website is like building a house. HTML is the wooden frame and walls - the structure. CSS is the paint, wallpaper, and decorations. The FRONTEND is everything guests see - the living room, kitchen. The BACKEND is the hidden stuff - plumbing, electrical wires, furnace. A FRAMEWORK is like buying a house kit with instructions. The GUI is the pretty doorknobs and light switches!" },
+            { section: "Building Websites", isExplainer: true, theme: "theme-websites", title: "🎈 Building a House", emoji: "🏠", text: "A website is like building a house. HTML is the wooden frame and walls - the structure. CSS is the paint, wallpaper, and decorations. The FRONTEND is everything guests see - the living room, kitchen. The BACKEND is the hidden stuff - plumbing, electrical wires, furnace. A FRAMEWORK is like buying a house kit with instructions. The GUI is the pretty doorknobs and light switches!" },
 
             // Section 6: Developer Tools (33-42)
             { section: "Developer Tools", acronym: "IDE", definition: "Integrated Development Environment", usage: "Microsoft Word for programmers - highlights mistakes and suggests fixes as you type code", theme: "theme-dev-tools", icon: "💻" },
@@ -448,7 +678,17 @@
             { section: "Data & Files", acronym: "YAML", definition: "YAML Ain't Markup Language", usage: "Settings file using spaces instead of weird brackets - easier to read", theme: "theme-data", icon: "📋" },
             { section: "Data & Files", acronym: "MD", definition: "Markdown", usage: "Easy text formatting with * and # symbols instead of clicking buttons", theme: "theme-data", icon: "#️⃣" },
             { section: "Data & Files", acronym: "PDF", definition: "Portable Document Format", usage: "Picture of a document that looks the same everywhere - can't easily edit", theme: "theme-data", icon: "🖼️" },
-            { section: "Data & Files", acronym: "SVG", definition: "Scalable Vector Graphics", usage: "Pictures made of math, not pixels - stays sharp at any size", theme: "theme-data", icon: "📐" }
+            { section: "Data & Files", acronym: "SVG", definition: "Scalable Vector Graphics", usage: "Pictures made of math, not pixels - stays sharp at any size", theme: "theme-data", icon: "📐" },
+            
+            // Section 9: Claude World (58-65)
+            { section: "Claude World", acronym: "Artifact", definition: "Interactive content Claude creates", usage: "Like a mini-app Claude builds for you - games, calculators, charts that you can use and edit", theme: "theme-quirks", icon: "🎨" },
+            { section: "Claude World", acronym: "Skills", definition: "Claude's extended capabilities", usage: "Special powers Claude can use - like searching the web, creating files, or analyzing data", theme: "theme-quirks", icon: "⚡" },
+            { section: "Claude World", acronym: "Projects", definition: "Workspaces with custom knowledge", usage: "Like giving Claude a personalized folder with your docs, style guide, and context it remembers", theme: "theme-quirks", icon: "📁" },
+            { section: "Claude World", acronym: "Styles", definition: "Claude's response personality", usage: "Choose how Claude talks - formal, casual, concise, or explanatory", theme: "theme-quirks", icon: "🎭" },
+            { section: "Claude World", acronym: "Cowork", definition: "Claude's desktop automation", usage: "Claude that can control your computer - move files, organize folders, automate tasks", theme: "theme-quirks", icon: "🖥️" },
+            { section: "Claude World", acronym: "Code", definition: "Claude's terminal companion", usage: "Claude in your command line - helps you code, debug, and run terminal commands", theme: "theme-quirks", icon: "💻" },
+            { section: "Claude World", acronym: "Memory", definition: "What Claude remembers about you", usage: "Details Claude saves across chats - your preferences, past projects, and frequently used info", theme: "theme-quirks", icon: "🧠" },
+            { section: "Claude World", isExplainer: true, theme: "theme-quirks", title: "🎈 The Claude Family", emoji: "👨‍👩‍👧‍👦", text: "Think of Claude as a helpful assistant with different tools! Regular Claude chats with you. Claude with ARTIFACTS builds interactive things like games. Claude with SKILLS can search the web or create files. PROJECTS give Claude your custom knowledge base. COWORK is Claude controlling your computer to help organize. CODE is Claude in your terminal helping you program. MEMORY helps Claude remember your preferences!" }
         ];
 
         const quizzes = [
@@ -486,6 +726,30 @@
             const flashcard = document.getElementById('flashcard');
             const quiz = document.getElementById('quiz');
             
+            // Check for congrats card
+            const congratsCard = congratsCards.find(c => c.afterIndex === currentIndex - 1);
+            
+            if (congratsCard && !isQuizMode) {
+                flashcard.classList.remove('hidden', 'explainer-card');
+                flashcard.classList.add(congratsCard.isVictory ? 'victory-card' : 'congrats-card');
+                quiz.classList.add('hidden');
+                
+                // Trigger confetti!
+                createConfetti();
+                
+                const badgeClass = congratsCard.isVictory ? 'victory-badge' : 'congrats-badge';
+                document.getElementById('sectionBadge').textContent = congratsCard.isVictory ? '🏆 All Done!' : `✓ ${congratsCard.prevSection}`;
+                document.getElementById('sectionBadge').className = `section-badge ${badgeClass}`;
+                document.getElementById('iconContainer').innerHTML = `<div style="font-size: 80px;">${congratsCard.emoji}</div>`;
+                document.getElementById('acronym').textContent = '';
+                document.getElementById('definition').textContent = '';
+                document.getElementById('usage').innerHTML = `<div class="${congratsCard.isVictory ? 'victory-text' : 'congrats-text'}">${congratsCard.message}</div>`;
+                document.body.className = congratsCard.isVictory ? 'theme-workflow' : 'theme-smart-ai';
+                document.getElementById('sectionProgressBar').style.width = '100%';
+                updateProgress();
+                return;
+            }
+            
             const quizToShow = quizzes.find(q => q.afterCard === currentIndex - 1);
             
             if (quizToShow && !isQuizMode) {
@@ -495,16 +759,16 @@
                 showQuiz(quizToShow);
                 clearInterval(interval);
             } else if (!isQuizMode) {
-                flashcard.classList.remove('hidden');
+                flashcard.classList.remove('hidden', 'congrats-card', 'victory-card');
                 quiz.classList.add('hidden');
                 
                 const term = terms[currentIndex];
                 
                 if (term.isExplainer) {
                     flashcard.classList.add('explainer-card');
-                    document.getElementById('sectionBadge').textContent = term.title;
+                    document.getElementById('sectionBadge').textContent = term.section;
                     document.getElementById('sectionBadge').className = 'section-badge explainer-badge';
-                    document.getElementById('iconContainer').innerHTML = '<div style="font-size: 64px;">🎈</div>';
+                    document.getElementById('iconContainer').innerHTML = `<div style="font-size: 64px;">${term.emoji || '🎈'}</div>`;
                     document.getElementById('acronym').textContent = '';
                     document.getElementById('definition').textContent = '';
                     document.getElementById('usage').innerHTML = `<div class="explainer-text">${term.text}</div>`;
@@ -601,8 +865,19 @@
         }
 
         function updateProgress() {
-            const displayIndex = currentIndex + 1;
-            document.getElementById('progress').textContent = `${displayIndex}/58`;
+            const currentTerm = terms[currentIndex];
+            if (!currentTerm) return;
+            
+            const currentSection = currentTerm.section;
+            const sectionInfo = sections[currentSection];
+            
+            if (sectionInfo) {
+                const sectionSize = sectionInfo.end - sectionInfo.start + 1;
+                const positionInSection = currentIndex - sectionInfo.start;
+                const percentComplete = Math.round((positionInSection / sectionSize) * 100);
+                
+                document.getElementById('sectionProgressBar').style.width = `${percentComplete}%`;
+            }
         }
 
         function nextItem() {
