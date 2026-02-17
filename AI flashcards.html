@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Acronym Screensaver</title>
+    <title>AI Terminology Flashcards</title>
     <style>
         * {
             margin: 0;
@@ -26,6 +26,15 @@
             text-align: center;
             padding: 40px;
             animation: fadeIn 1s ease-in;
+            max-width: 1000px;
+        }
+        
+        .flashcard {
+            display: block;
+        }
+        
+        .quiz {
+            display: none;
         }
         
         .acronym {
@@ -51,6 +60,61 @@
             margin: 0 auto;
             opacity: 0.9;
             line-height: 1.6;
+        }
+        
+        .quiz-question {
+            font-size: 28px;
+            margin-bottom: 40px;
+            font-weight: 400;
+        }
+        
+        .quiz-options {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .quiz-option {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 20px;
+            transition: all 0.3s;
+            text-align: left;
+        }
+        
+        .quiz-option:hover {
+            background: rgba(255,255,255,0.3);
+            transform: translateX(10px);
+        }
+        
+        .quiz-option.correct {
+            background: rgba(46, 213, 115, 0.8);
+            border-color: #2ed573;
+        }
+        
+        .quiz-option.incorrect {
+            background: rgba(255, 71, 87, 0.8);
+            border-color: #ff4757;
+        }
+        
+        .quiz-option.disabled {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+        
+        .feedback {
+            margin-top: 30px;
+            font-size: 20px;
+            min-height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .progress {
@@ -86,6 +150,28 @@
             transform: scale(1.05);
         }
         
+        .skip-btn {
+            margin-top: 30px;
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .hint-btn {
+            margin-top: 20px;
+            background: rgba(255, 193, 7, 0.3);
+            border-color: #ffc107;
+        }
+        
+        .hint-btn:hover {
+            background: rgba(255, 193, 7, 0.4);
+        }
+        
+        .hint-text {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #ffc107;
+            font-style: italic;
+        }
+        
         @keyframes fadeIn {
             from { opacity: 0; transform: scale(0.9); }
             to { opacity: 1; transform: scale(1); }
@@ -99,17 +185,28 @@
 </head>
 <body>
     <div class="container">
-        <div class="acronym" id="acronym">LLM</div>
-        <div class="definition" id="definition">Large Language Model</div>
-        <div class="usage" id="usage">The AI system that powers Claude - processes text input and generates responses</div>
+        <div class="flashcard" id="flashcard">
+            <div class="acronym" id="acronym">LLM</div>
+            <div class="definition" id="definition">Large Language Model</div>
+            <div class="usage" id="usage">A computer brain trained by reading billions of books and websites to chat like a human</div>
+        </div>
+        
+        <div class="quiz" id="quiz">
+            <div class="quiz-question" id="quizQuestion"></div>
+            <div class="quiz-options" id="quizOptions"></div>
+            <div class="feedback" id="feedback"></div>
+            <div class="hint-text" id="hint" style="display: none;"></div>
+            <button class="hint-btn" onclick="showHint()" id="hintBtn">💡 Give me a hint</button>
+            <button class="skip-btn" onclick="skipQuiz()">Skip →</button>
+        </div>
     </div>
     
     <div class="progress" id="progress">1 / 40</div>
     
     <div class="controls">
-        <button onclick="prevTerm()">← Prev</button>
+        <button onclick="prevItem()">← Prev</button>
         <button onclick="togglePause()" id="pauseBtn">Pause</button>
-        <button onclick="nextTerm()">Next →</button>
+        <button onclick="nextItem()">Next →</button>
     </div>
 
     <script>
@@ -156,26 +253,244 @@
             { acronym: "Workflow", definition: "Automated task sequence", usage: "Robot instructions that do boring tasks automatically - like a morning routine checklist" }
         ];
 
+        const quizzes = [
+            // Quiz after cards 0-3 (LLM, API, MCP, RAG)
+            {
+                afterCard: 3,
+                question: "You want AI to search your company documents before answering. Which would you use?",
+                hint: "Think about checking your notes before answering a question",
+                options: [
+                    { text: "RAG", correct: true, feedback: "Yes! RAG retrieves relevant documents so AI can answer with your actual data" },
+                    { text: "API", correct: false, feedback: "Not quite. API is how programs communicate, not how AI accesses documents" },
+                    { text: "LLM", correct: false, feedback: "LLM is the AI itself, but it needs RAG to access your specific documents" },
+                    { text: "MCP", correct: false, feedback: "MCP connects to tools, but RAG specifically handles document retrieval" }
+                ]
+            },
+            // Quiz after cards 4-7 (CoT, TTFT, TPS, TPM)
+            {
+                afterCard: 7,
+                question: "You're waiting for AI to start responding. Which metric measures this wait time?",
+                hint: "Think about waiting for someone to start talking after you ask them something",
+                options: [
+                    { text: "TTFT", correct: true, feedback: "Correct! Time To First Token measures how fast the response starts" },
+                    { text: "TPS", correct: false, feedback: "TPS measures speed during the response, not the initial wait" },
+                    { text: "TPM", correct: false, feedback: "TPM is a rate limit, not a speed measurement" },
+                    { text: "CoT", correct: false, feedback: "CoT is a thinking method, not a performance metric" }
+                ]
+            },
+            // Quiz after cards 8-11 (RPM, SSE, SDK, REST)
+            {
+                afterCard: 11,
+                question: "You're building an app that needs to call an AI API. What makes this easier?",
+                hint: "Think about pre-made LEGO blocks instead of building from scratch",
+                options: [
+                    { text: "SDK", correct: true, feedback: "Yes! SDK provides pre-built code so you don't have to write everything from scratch" },
+                    { text: "REST", correct: false, feedback: "REST is the communication style, but SDK makes it easier to use" },
+                    { text: "SSE", correct: false, feedback: "SSE is for streaming responses, not for making API calls easier" },
+                    { text: "RPM", correct: false, feedback: "RPM is a rate limit, not a development tool" }
+                ]
+            },
+            // Quiz after cards 12-15 (JSON, CLI, IDE, CI/CD)
+            {
+                afterCard: 15,
+                question: "You want your code tested automatically before going live. What helps with this?",
+                hint: "Think about a robot that tests and publishes automatically",
+                options: [
+                    { text: "CI/CD", correct: true, feedback: "Correct! CI/CD automatically tests and deploys your code when everything passes" },
+                    { text: "IDE", correct: false, feedback: "IDE helps you write code, but doesn't automate testing and deployment" },
+                    { text: "CLI", correct: false, feedback: "CLI is how you type commands, not an automation system" },
+                    { text: "JSON", correct: false, feedback: "JSON is a data format, not a testing tool" }
+                ]
+            },
+            // Mixed quiz after card 19 (tests cards 0-19)
+            {
+                afterCard: 19,
+                question: "You're experimenting with risky code changes. What keeps your working version safe?",
+                hint: "Think about making a rough draft so you don't mess up the final version",
+                options: [
+                    { text: "Branch", correct: true, feedback: "Yes! Branches let you experiment without affecting the main working code" },
+                    { text: "Repo", correct: false, feedback: "Repo stores everything, but doesn't protect against bad changes" },
+                    { text: "Docker", correct: false, feedback: "Docker packages apps, but doesn't help with code experimentation" },
+                    { text: "venv", correct: false, feedback: "venv isolates Python packages, not code versions" }
+                ]
+            },
+            // Mixed quiz after card 24
+            {
+                afterCard: 24,
+                question: "Your API key needs to stay secret. Where should you store it?",
+                hint: "Think about keeping keys in your pocket instead of writing them down publicly",
+                options: [
+                    { text: ".env file", correct: true, feedback: "Correct! .env keeps secrets on your computer and out of your code" },
+                    { text: "Git repo", correct: false, feedback: "Never put secrets in Git - they'd be visible to everyone" },
+                    { text: "JSON file", correct: false, feedback: "JSON is just a format - secrets need special protection like .env" },
+                    { text: "README", correct: false, feedback: "README is public documentation - never put secrets there" }
+                ]
+            },
+            // Mixed quiz after card 29
+            {
+                afterCard: 29,
+                question: "Two teammates made different changes to the same file. What helps merge them?",
+                hint: "Think about taking snapshots so you can go back in time if you mess up",
+                options: [
+                    { text: "Git", correct: true, feedback: "Yes! Git tracks changes and helps merge different versions together" },
+                    { text: "CLI", correct: false, feedback: "CLI is how you type commands, not a version control system" },
+                    { text: "PATH", correct: false, feedback: "PATH tells your computer where programs are, doesn't handle file merging" },
+                    { text: "CSV", correct: false, feedback: "CSV is a data format, not a collaboration tool" }
+                ]
+            },
+            // Mixed quiz after card 34
+            {
+                afterCard: 34,
+                question: "You want your app to work identically on any computer. What packages everything together?",
+                hint: "Think about a lunch box that holds everything your app needs in one container",
+                options: [
+                    { text: "Docker", correct: true, feedback: "Correct! Docker bundles your app with all its dependencies" },
+                    { text: "VM", correct: false, feedback: "VM simulates a whole computer - Docker is lighter and more portable" },
+                    { text: "venv", correct: false, feedback: "venv only isolates Python packages, not the entire app environment" },
+                    { text: "npm", correct: false, feedback: "npm installs packages but doesn't bundle everything for portability" }
+                ]
+            },
+            // Final mixed quiz
+            {
+                afterCard: 39,
+                question: "AI needs to remember your earlier messages in a conversation. What enables this?",
+                hint: "Think about talking to a friend who doesn't forget what you said earlier",
+                options: [
+                    { text: "Multi-turn", correct: true, feedback: "Yes! Multi-turn conversations maintain context across messages" },
+                    { text: "Cache", correct: false, feedback: "Cache saves repeated prompts for speed, not conversation memory" },
+                    { text: "Context window", correct: false, feedback: "Close! Context is the capacity, but multi-turn is the feature that uses it for conversations" },
+                    { text: "Workflow", correct: false, feedback: "Workflow is for task automation, not conversation memory" }
+                ]
+            }
+        ];
+
         let currentIndex = 0;
         let isPaused = false;
         let interval;
+        let isQuizMode = false;
+        let currentQuiz = null;
+        let totalItems = terms.length + quizzes.length;
 
         function updateDisplay() {
-            const term = terms[currentIndex];
-            document.getElementById('acronym').textContent = term.acronym;
-            document.getElementById('definition').textContent = term.definition;
-            document.getElementById('usage').textContent = term.usage;
-            document.getElementById('progress').textContent = `${currentIndex + 1} / ${terms.length}`;
+            const flashcard = document.getElementById('flashcard');
+            const quiz = document.getElementById('quiz');
+            
+            // Check if we should show a quiz
+            const quizToShow = quizzes.find(q => q.afterCard === currentIndex - 1);
+            
+            if (quizToShow && !isQuizMode) {
+                // Show quiz
+                isQuizMode = true;
+                flashcard.style.display = 'none';
+                quiz.style.display = 'block';
+                showQuiz(quizToShow);
+                clearInterval(interval); // Pause auto-advance
+            } else if (!isQuizMode) {
+                // Show flashcard
+                flashcard.style.display = 'block';
+                quiz.style.display = 'none';
+                
+                const term = terms[currentIndex];
+                document.getElementById('acronym').textContent = term.acronym;
+                document.getElementById('definition').textContent = term.definition;
+                document.getElementById('usage').textContent = term.usage;
+            }
+            
+            updateProgress();
         }
 
-        function nextTerm() {
-            currentIndex = (currentIndex + 1) % terms.length;
+        function showQuiz(quiz) {
+            currentQuiz = quiz;
+            document.getElementById('quizQuestion').textContent = quiz.question;
+            document.getElementById('feedback').textContent = '';
+            document.getElementById('hint').style.display = 'none';
+            document.getElementById('hintBtn').style.display = 'inline-block';
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+            
+            quiz.options.forEach((option, index) => {
+                const btn = document.createElement('div');
+                btn.className = 'quiz-option';
+                btn.textContent = option.text;
+                btn.onclick = () => answerQuiz(option, btn, quiz.options);
+                optionsContainer.appendChild(btn);
+            });
+        }
+
+        function showHint() {
+            const hintElement = document.getElementById('hint');
+            const hintBtn = document.getElementById('hintBtn');
+            
+            hintElement.textContent = currentQuiz.hint;
+            hintElement.style.display = 'block';
+            hintBtn.style.display = 'none';
+        }
+
+        function answerQuiz(selectedOption, selectedBtn, allOptions) {
+            // Disable all options
+            document.querySelectorAll('.quiz-option').forEach(btn => {
+                btn.classList.add('disabled');
+            });
+            
+            // Show correct/incorrect
+            if (selectedOption.correct) {
+                selectedBtn.classList.add('correct');
+            } else {
+                selectedBtn.classList.add('incorrect');
+                // Highlight correct answer
+                document.querySelectorAll('.quiz-option').forEach((btn, idx) => {
+                    if (allOptions[idx].correct) {
+                        btn.classList.add('correct');
+                    }
+                });
+            }
+            
+            // Show feedback
+            document.getElementById('feedback').textContent = selectedOption.feedback;
+            
+            // Auto-continue after 3 seconds
+            setTimeout(() => {
+                skipQuiz();
+            }, 3000);
+        }
+
+        function skipQuiz() {
+            isQuizMode = false;
+            currentIndex++;
+            if (currentIndex >= terms.length) {
+                currentIndex = 0; // Loop back
+            }
             updateDisplay();
+            if (!isPaused) {
+                startInterval();
+            }
         }
 
-        function prevTerm() {
+        function updateProgress() {
+            const displayIndex = currentIndex + 1;
+            document.getElementById('progress').textContent = `${displayIndex} / ${terms.length}`;
+        }
+
+        function nextItem() {
+            if (isQuizMode) {
+                skipQuiz();
+            } else {
+                currentIndex = (currentIndex + 1) % terms.length;
+                updateDisplay();
+            }
+        }
+
+        function prevItem() {
+            if (isQuizMode) {
+                isQuizMode = false;
+            }
             currentIndex = (currentIndex - 1 + terms.length) % terms.length;
             updateDisplay();
+            if (!isPaused && !isQuizMode) {
+                clearInterval(interval);
+                startInterval();
+            }
         }
 
         function togglePause() {
@@ -185,27 +500,34 @@
             
             if (isPaused) {
                 clearInterval(interval);
-            } else {
+            } else if (!isQuizMode) {
                 startInterval();
             }
         }
 
         function startInterval() {
-            interval = setInterval(nextTerm, 15000);
+            clearInterval(interval);
+            interval = setInterval(() => {
+                if (!isQuizMode) {
+                    nextItem();
+                }
+            }, 15000);
         }
 
         // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
-                nextTerm();
+                e.preventDefault();
+                nextItem();
             } else if (e.key === 'ArrowLeft') {
-                prevTerm();
+                e.preventDefault();
+                prevItem();
             } else if (e.key === 'p' || e.key === 'P') {
                 togglePause();
             }
         });
 
-        // Start the screensaver
+        // Start
         updateDisplay();
         startInterval();
     </script>
