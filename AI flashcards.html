@@ -3,127 +3,293 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Terminology Flashcards</title>
+    <title>AI Flashcards</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Merriweather:wght@400,700&family=Inter:wght@400,600&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
         }
         
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            height: 100vh;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             justify-content: center;
             align-items: center;
             overflow: hidden;
-            color: white;
+            color: #2c1810;
+            transition: background 0.8s ease;
+            padding: 20px;
+            background-image: 
+                repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px),
+                repeating-linear-gradient(90deg, transparent, transparent 2px, rgba(0,0,0,.03) 2px, rgba(0,0,0,.03) 4px);
         }
         
-        .container {
+        /* Color themes */
+        body.theme-fundamentals { background-color: #a8c0ff; }
+        body.theme-communication { background-color: #ffc3a0; }
+        body.theme-smart-ai { background-color: #84fab0; }
+        body.theme-performance { background-color: #ffecd2; }
+        body.theme-websites { background-color: #d299c2; }
+        body.theme-dev-tools { background-color: #a1c4fd; }
+        body.theme-environments { background-color: #c5f5c5; }
+        body.theme-data { background-color: #ffe6f0; }
+        body.theme-packages { background-color: #fff9c4; }
+        body.theme-quirks { background-color: #e0d4ff; }
+        
+        .card {
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4ba 100%);
+            border: 5px solid #4a3428;
+            border-radius: 20px;
+            box-shadow: 
+                0 8px 0 #3a2818,
+                0 8px 20px rgba(0,0,0,0.3);
+            max-width: 450px;
+            width: 100%;
+            padding: 32px 24px;
             text-align: center;
-            padding: 40px;
-            animation: fadeIn 1s ease-in;
-            max-width: 1000px;
+            position: relative;
+            animation: cardAppear 0.5s ease;
         }
         
-        .flashcard {
-            display: block;
+        .card.explainer-card {
+            background: linear-gradient(135deg, #fff9e6 0%, #ffe6cc 100%);
+            border-color: #f59e0b;
         }
         
-        .quiz {
-            display: none;
+        @keyframes cardAppear {
+            from { opacity: 0; transform: scale(0.95) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            inset: 8px;
+            border: 2px solid rgba(139, 90, 43, 0.3);
+            border-radius: 15px;
+            pointer-events: none;
+        }
+        
+        .icon-container {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.15));
+        }
+        
+        .section-badge {
+            display: inline-block;
+            background: rgba(251, 146, 60, 0.9);
+            color: white;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            border: 2px solid #ea580c;
+        }
+        
+        .explainer-badge {
+            background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+            border-color: #d97706;
+            font-size: 13px;
+            padding: 8px 16px;
         }
         
         .acronym {
-            font-size: 120px;
-            font-weight: bold;
-            margin-bottom: 30px;
-            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
-            animation: pulse 2s ease-in-out infinite;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 38px;
+            margin-bottom: 20px;
+            color: #2c1810;
+            text-shadow: 
+                2px 2px 0 #8b5a2b,
+                3px 3px 0 rgba(0,0,0,0.2);
+            line-height: 1.4;
         }
         
         .definition {
-            font-size: 36px;
-            font-weight: 300;
-            max-width: 800px;
-            margin: 0 auto 30px auto;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            font-family: 'Merriweather', serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 18px;
+            color: #4a3428;
         }
         
         .usage {
-            font-size: 20px;
-            font-weight: 300;
-            max-width: 900px;
-            margin: 0 auto;
-            opacity: 0.9;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
             line-height: 1.6;
+            color: #5a4438;
+        }
+        
+        .explainer-text {
+            font-family: 'Inter', sans-serif;
+            font-size: 18px;
+            line-height: 1.8;
+            color: #92400e;
+            font-weight: 500;
         }
         
         .quiz-question {
-            font-size: 28px;
-            margin-bottom: 40px;
-            font-weight: 400;
+            font-family: 'Merriweather', serif;
+            font-size: 19px;
+            font-weight: 700;
+            margin-bottom: 24px;
+            color: #2c1810;
         }
         
         .quiz-options {
             display: flex;
             flex-direction: column;
-            gap: 20px;
-            max-width: 700px;
-            margin: 0 auto;
+            gap: 12px;
+            margin-bottom: 16px;
         }
         
         .quiz-option {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 20px;
-            border-radius: 15px;
+            background: linear-gradient(135deg, #fff9f0 0%, #f5e6d3 100%);
+            border: 4px solid #4a3428;
+            padding: 14px;
+            border-radius: 12px;
             cursor: pointer;
-            font-size: 20px;
-            transition: all 0.3s;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.2s;
             text-align: left;
+            box-shadow: 0 4px 0 #3a2818;
+            display: flex;
+            align-items: center;
+            gap: 12px;
         }
         
-        .quiz-option:hover {
-            background: rgba(255,255,255,0.3);
-            transform: translateX(10px);
+        .quiz-option:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #3a2818;
+        }
+        
+        .quiz-option-icon {
+            width: 44px;
+            height: 44px;
+            flex-shrink: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+        }
+        
+        .quiz-option-text {
+            flex: 1;
         }
         
         .quiz-option.correct {
-            background: rgba(46, 213, 115, 0.8);
-            border-color: #2ed573;
+            background: linear-gradient(135deg, #86efac 0%, #4ade80 100%);
+            border-color: #166534;
+            animation: successPulse 0.5s;
         }
         
         .quiz-option.incorrect {
-            background: rgba(255, 71, 87, 0.8);
-            border-color: #ff4757;
+            background: linear-gradient(135deg, #fca5a5 0%, #f87171 100%);
+            border-color: #991b1b;
+            animation: shake 0.4s;
+        }
+        
+        @keyframes successPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-8px); }
+            75% { transform: translateX(8px); }
         }
         
         .quiz-option.disabled {
             pointer-events: none;
-            opacity: 0.6;
+            opacity: 0.7;
         }
         
         .feedback {
-            margin-top: 30px;
-            font-size: 20px;
-            min-height: 60px;
+            font-size: 15px;
+            line-height: 1.5;
+            margin-top: 16px;
+            padding: 14px;
+            border-radius: 8px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid #8b5a2b;
+            min-height: 70px;
             display: flex;
             align-items: center;
             justify-content: center;
+            text-align: left;
+        }
+        
+        .hint-text {
+            font-size: 14px;
+            font-style: italic;
+            color: #92400e;
+            margin-top: 12px;
+            padding: 12px;
+            background: rgba(251, 191, 36, 0.3);
+            border-radius: 8px;
+            border: 2px dashed #92400e;
+        }
+        
+        .button-group {
+            display: flex;
+            gap: 8px;
+            margin-top: 16px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        button {
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4ba 100%);
+            border: 3px solid #4a3428;
+            color: #2c1810;
+            padding: 12px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 700;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+            box-shadow: 0 4px 0 #3a2818;
+        }
+        
+        button:active {
+            transform: translateY(2px);
+            box-shadow: 0 2px 0 #3a2818;
+        }
+        
+        .hint-btn {
+            background: linear-gradient(135deg, #fcd34d 0%, #f59e0b 100%);
+            border-color: #92400e;
+        }
+        
+        .skip-btn {
+            background: linear-gradient(135deg, #cbd5e1 0%, #94a3b8 100%);
         }
         
         .progress {
             position: fixed;
-            bottom: 40px;
-            left: 50%;
-            transform: translateX(-50%);
-            font-size: 18px;
-            opacity: 0.7;
+            bottom: 20px;
+            font-family: 'Press Start 2P', monospace;
+            font-size: 10px;
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d4ba 100%);
+            padding: 10px 18px;
+            border: 3px solid #4a3428;
+            border-radius: 20px;
+            box-shadow: 0 4px 0 #3a2818;
         }
         
         .controls {
@@ -131,235 +297,181 @@
             top: 20px;
             right: 20px;
             display: flex;
-            gap: 10px;
+            gap: 8px;
         }
         
-        button {
-            background: rgba(255,255,255,0.2);
-            border: 2px solid white;
-            color: white;
-            padding: 10px 20px;
-            border-radius: 25px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: all 0.3s;
+        .controls button {
+            padding: 10px 14px;
+            font-size: 12px;
         }
         
-        button:hover {
-            background: rgba(255,255,255,0.3);
-            transform: scale(1.05);
+        .hidden {
+            display: none;
         }
         
-        .skip-btn {
-            margin-top: 30px;
-            background: rgba(255,255,255,0.15);
-        }
-        
-        .hint-btn {
-            margin-top: 20px;
-            background: rgba(255, 193, 7, 0.3);
-            border-color: #ffc107;
-        }
-        
-        .hint-btn:hover {
-            background: rgba(255, 193, 7, 0.4);
-        }
-        
-        .hint-text {
-            margin-top: 20px;
-            font-size: 18px;
-            color: #ffc107;
-            font-style: italic;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: scale(0.9); }
-            to { opacity: 1; transform: scale(1); }
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.05); }
+        @media (max-width: 480px) {
+            .card {
+                padding: 24px 20px;
+            }
+            
+            .icon-container {
+                width: 80px;
+                height: 80px;
+            }
+            
+            .acronym {
+                font-size: 28px;
+            }
+            
+            .definition {
+                font-size: 17px;
+            }
+            
+            .usage, .explainer-text {
+                font-size: 15px;
+            }
+            
+            .quiz-question {
+                font-size: 16px;
+            }
+            
+            .feedback {
+                font-size: 14px;
+            }
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="flashcard" id="flashcard">
-            <div class="acronym" id="acronym">LLM</div>
-            <div class="definition" id="definition">Large Language Model</div>
-            <div class="usage" id="usage">A computer brain trained by reading billions of books and websites to chat like a human</div>
-        </div>
-        
-        <div class="quiz" id="quiz">
-            <div class="quiz-question" id="quizQuestion"></div>
-            <div class="quiz-options" id="quizOptions"></div>
-            <div class="feedback" id="feedback"></div>
-            <div class="hint-text" id="hint" style="display: none;"></div>
-            <button class="hint-btn" onclick="showHint()" id="hintBtn">💡 Give me a hint</button>
+<body class="theme-fundamentals">
+    <div class="card" id="flashcard">
+        <div class="section-badge" id="sectionBadge">What is AI?</div>
+        <div class="icon-container" id="iconContainer"></div>
+        <div class="acronym" id="acronym">LLM</div>
+        <div class="definition" id="definition">Large Language Model</div>
+        <div class="usage" id="usage">A computer brain trained by reading billions of books and websites to chat like a human</div>
+    </div>
+    
+    <div class="card hidden" id="quiz">
+        <div class="quiz-question" id="quizQuestion"></div>
+        <div class="quiz-options" id="quizOptions"></div>
+        <div class="feedback" id="feedback"></div>
+        <div class="hint-text hidden" id="hint"></div>
+        <div class="button-group">
+            <button class="hint-btn" onclick="showHint()" id="hintBtn">💡 Hint</button>
             <button class="skip-btn" onclick="skipQuiz()">Skip →</button>
         </div>
     </div>
     
-    <div class="progress" id="progress">1 / 40</div>
+    <div class="progress" id="progress">1/58</div>
     
     <div class="controls">
-        <button onclick="prevItem()">← Prev</button>
-        <button onclick="togglePause()" id="pauseBtn">Pause</button>
-        <button onclick="nextItem()">Next →</button>
+        <button onclick="prevItem()">←</button>
+        <button onclick="togglePause()" id="pauseBtn">⏸</button>
+        <button onclick="nextItem()">→</button>
     </div>
 
     <script>
+        function renderIcon(iconName, container) {
+            container.innerHTML = `<div style="font-size: 72px;">${iconName}</div>`;
+        }
+
         const terms = [
-            { acronym: "LLM", definition: "Large Language Model", usage: "A computer brain trained by reading billions of books and websites to chat like a human" },
-            { acronym: "API", definition: "Application Programming Interface", usage: "Like a waiter - you ask for something, they bring it from the kitchen (another computer)" },
-            { acronym: "MCP", definition: "Model Context Protocol", usage: "Lets AI use tools like opening your email or calendar, like giving it hands to help you" },
-            { acronym: "RAG", definition: "Retrieval-Augmented Generation", usage: "AI looks up answers in your documents first, like checking your notes before answering" },
-            { acronym: "CoT", definition: "Chain of Thought", usage: "AI explains its thinking step-by-step, like showing your work on a math problem" },
-            { acronym: "TTFT", definition: "Time To First Token", usage: "How fast the first word appears after you hit send - like waiting for someone to start talking" },
-            { acronym: "TPS", definition: "Tokens Per Second", usage: "How many words pop up each second - faster means less staring at a blank screen" },
-            { acronym: "TPM", definition: "Tokens Per Minute", usage: "Maximum words you can use per minute - like having 10,000 Scrabble tiles to use each minute" },
-            { acronym: "RPM", definition: "Requests Per Minute", usage: "How many questions you can ask per minute - like limits on raising your hand in class" },
-            { acronym: "SSE", definition: "Server-Sent Events", usage: "Words appear one at a time as AI thinks, not all at once when it's done" },
-            { acronym: "SDK", definition: "Software Development Kit", usage: "Pre-made LEGO blocks of code so you don't build everything from scratch" },
-            { acronym: "REST", definition: "Representational State Transfer", usage: "Standard way computers ask each other for stuff - like saying 'please' and 'thank you'" },
-            { acronym: "JSON", definition: "JavaScript Object Notation", usage: "Way to organize information with labels, like putting food in labeled containers" },
-            { acronym: "CLI", definition: "Command Line Interface", usage: "Black screen where you type commands like 'open file' instead of clicking icons" },
-            { acronym: "IDE", definition: "Integrated Development Environment", usage: "Microsoft Word for programmers - highlights mistakes and suggests fixes as you type code" },
-            { acronym: "CI/CD", definition: "Continuous Integration/Continuous Deployment", usage: "Robot that tests your app and publishes it automatically when everything works" },
-            { acronym: "GUI", definition: "Graphical User Interface", usage: "Apps with pictures and buttons you can click - like your phone's home screen" },
-            { acronym: "ENV", definition: "Environment variables", usage: "Secret passwords stored separately from your code, like keeping keys in your pocket not written down" },
-            { acronym: ".env", definition: "Environment configuration file", usage: "Secret note file with passwords - lives on your computer only, never show anyone" },
-            { acronym: "PATH", definition: "System path variable", usage: "List of places computer looks for programs, like knowing which drawer has the forks" },
-            { acronym: "CWD", definition: "Current Working Directory", usage: "Which folder you're in right now - like knowing if you're in the kitchen or bedroom" },
-            { acronym: "venv", definition: "Virtual environment", usage: "Separate toy box for each project so the toys don't get mixed up" },
-            { acronym: "Docker", definition: "Containerization platform", usage: "Lunch box that holds your app and everything it needs - works anywhere you open it" },
-            { acronym: "VM", definition: "Virtual Machine", usage: "Pretend computer inside your real computer - safe playground to test dangerous stuff" },
-            { acronym: "CSV", definition: "Comma-Separated Values", usage: "Spreadsheet saved as plain text with commas between columns - really simple, just data" },
-            { acronym: "XML", definition: "Extensible Markup Language", usage: "Way to label data with tags like <name>Bob</name> so computers know what's what" },
-            { acronym: "YAML", definition: "YAML Ain't Markup Language", usage: "Settings file that uses spaces like paragraphs instead of weird brackets" },
-            { acronym: "MD", definition: "Markdown", usage: "Easy way to make text bold or big using * and # symbols instead of clicking buttons" },
-            { acronym: "PDF", definition: "Portable Document Format", usage: "Picture of a document that looks the same on everyone's computer - can't easily edit it" },
-            { acronym: "Git", definition: "Version control system", usage: "Takes snapshots of your work so you can go back in time if you mess up" },
-            { acronym: "Repo", definition: "Repository", usage: "Special folder that remembers every change you ever made to the files inside" },
-            { acronym: "npm", definition: "Node Package Manager", usage: "App store for JavaScript code pieces - type one command and it downloads what you need" },
-            { acronym: "pip", definition: "Python Package Installer", usage: "App store for Python code pieces - downloads helpful tools other people made" },
-            { acronym: "PR", definition: "Pull Request", usage: "Asking 'Can I add my changes?' before mixing your work into the main project" },
-            { acronym: "Branch", definition: "Code version branch", usage: "Copy of your project where you experiment without breaking the real one - like a rough draft" },
-            { acronym: "Latency", definition: "Response delay", usage: "Waiting time between clicking and seeing results - like lag in video games" },
-            { acronym: "Context", definition: "Input size limit (context window)", usage: "How much the AI can remember at once - like how many things you can hold in your arms" },
-            { acronym: "Cache", definition: "Reusing prompt prefixes (prompt caching)", usage: "Remembering repeated parts so it doesn't re-read them - like skipping a movie intro you've seen" },
-            { acronym: "Multi-turn", definition: "Back-and-forth conversations", usage: "AI remembers what you said earlier, like talking to a friend who doesn't forget everything" },
-            { acronym: "Workflow", definition: "Automated task sequence", usage: "Robot instructions that do boring tasks automatically - like a morning routine checklist" }
+            // Section 1: What is AI? (0-6)
+            { section: "What is AI?", acronym: "LLM", definition: "Large Language Model", usage: "A computer brain trained by reading billions of books and websites to chat like a human", theme: "theme-fundamentals", icon: "🧠" },
+            { section: "What is AI?", acronym: "Model", definition: "The AI brain itself", usage: "Like a really smart robot brain that learned patterns from lots of examples", theme: "theme-fundamentals", icon: "🤖" },
+            { section: "What is AI?", acronym: "Training", definition: "How AI learns", usage: "Feeding the AI millions of examples so it learns patterns, like teaching a dog tricks", theme: "theme-fundamentals", icon: "📚" },
+            { section: "What is AI?", acronym: "Inference", definition: "When AI is actually being used", usage: "After training is done, this is the AI doing its job - like a trained dog performing tricks", theme: "theme-fundamentals", icon: "✨" },
+            { section: "What is AI?", acronym: "Prompt", definition: "What you type to AI", usage: "Your question or instruction to the AI - like asking a friend for help", theme: "theme-fundamentals", icon: "💬" },
+            { section: "What is AI?", acronym: "Token", definition: "Chunks AI reads and writes", usage: "Words broken into pieces - 'hamburger' might be 'ham' + 'burger'. AI thinks in tokens.", theme: "theme-fundamentals", icon: "🧩" },
+            { section: "What is AI?", isExplainer: true, theme: "theme-fundamentals", title: "🎈 How AI Actually Works", text: "Imagine AI is like a really smart parrot that read every book in the world. You ask it a question (that's a PROMPT), and it predicts what words should come next based on everything it read (that's INFERENCE). It learned by reading millions of times (TRAINING). The parrot doesn't understand like you do - it's just really, really good at guessing what words fit together!" },
+            
+            // Section 2: How AI Talks (7-12)
+            { section: "How AI Talks", acronym: "API", definition: "Application Programming Interface", usage: "Like a waiter - you ask for something, they bring it from the kitchen (another computer)", theme: "theme-communication", icon: "☕" },
+            { section: "How AI Talks", acronym: "REST", definition: "Representational State Transfer", usage: "Standard way computers ask each other for stuff - like saying 'please' and 'thank you'", theme: "theme-communication", icon: "🙏" },
+            { section: "How AI Talks", acronym: "JSON", definition: "JavaScript Object Notation", usage: "Way to organize information with labels, like putting food in labeled containers", theme: "theme-communication", icon: "🏷️" },
+            { section: "How AI Talks", acronym: "Endpoint", definition: "The address where an API lives", usage: "Like a restaurant's street address - you need it to place an order", theme: "theme-communication", icon: "📍" },
+            { section: "How AI Talks", acronym: "MCP", definition: "Model Context Protocol", usage: "Lets AI use tools like opening your email or calendar, like giving it hands to help you", theme: "theme-communication", icon: "🛠️" },
+            { section: "How AI Talks", isExplainer: true, theme: "theme-communication", title: "🎈 The Internet Restaurant", text: "The internet is like a giant restaurant. Your computer is you sitting at a table. The API is the waiter who takes your order to the kitchen (another computer). You write your order in JSON format (like a menu form). The waiter goes to the ENDPOINT (the kitchen door) and brings back your food. REST is just the polite way everyone agrees to talk!" },
+            
+            // Section 3: Making AI Smarter (13-18)
+            { section: "Making AI Smarter", acronym: "RAG", definition: "Retrieval-Augmented Generation", usage: "AI looks up answers in your documents first, like checking your notes before answering", theme: "theme-smart-ai", icon: "📓" },
+            { section: "Making AI Smarter", acronym: "Context", definition: "How much AI can remember at once", usage: "Like how many things you can hold in your arms - more context = remembers more of your conversation", theme: "theme-smart-ai", icon: "🤗" },
+            { section: "Making AI Smarter", acronym: "Embedding", definition: "Converting text to numbers", usage: "Turning words into math so computers can compare meanings - 'dog' and 'puppy' get similar numbers", theme: "theme-smart-ai", icon: "🔢" },
+            { section: "Making AI Smarter", acronym: "Vector", definition: "A list of numbers representing meaning", usage: "Like GPS coordinates but for word meanings - helps AI find similar ideas", theme: "theme-smart-ai", icon: "📊" },
+            { section: "Making AI Smarter", acronym: "Fine-tuning", definition: "Customizing a trained model", usage: "Teaching an already-smart AI your specific style - like training a chef to make your family recipes", theme: "theme-smart-ai", icon: "🎯" },
+            { section: "Making AI Smarter", isExplainer: true, theme: "theme-smart-ai", title: "🎈 Your Brain is a Library", text: "Imagine your brain is like a library. CONTEXT is how many books you can hold at once. EMBEDDINGS turn every book into a special number code. VECTORS help you find books that mean similar things. RAG is like hiring a librarian who finds the exact right books before answering your question. FINE-TUNING is adding your own special books to the library!" },
+            
+            // Section 4: AI Performance (19-25)
+            { section: "Speed & Limits", acronym: "TTFT", definition: "Time To First Token", usage: "How fast the first word appears - like waiting for someone to start talking", theme: "theme-performance", icon: "⏱️" },
+            { section: "Speed & Limits", acronym: "TPS", definition: "Tokens Per Second", usage: "How many words pop up each second - typing speed of the AI", theme: "theme-performance", icon: "⚡" },
+            { section: "Speed & Limits", acronym: "TPM", definition: "Tokens Per Minute", usage: "Maximum words you can use per minute - like a budget of Scrabble tiles", theme: "theme-performance", icon: "🅰️" },
+            { section: "Speed & Limits", acronym: "RPM", definition: "Requests Per Minute", usage: "How many questions you can ask per minute - like limits on raising your hand", theme: "theme-performance", icon: "🚦" },
+            { section: "Speed & Limits", acronym: "Latency", definition: "Response delay", usage: "Waiting time between clicking and seeing results - like lag in video games", theme: "theme-performance", icon: "⏳" },
+            { section: "Speed & Limits", acronym: "SSE", definition: "Server-Sent Events", usage: "Words appear one at a time as AI thinks, not all at once when done", theme: "theme-performance", icon: "💭" },
+            { section: "Speed & Limits", isExplainer: true, theme: "theme-performance", title: "🎈 Fast vs Slow AI", text: "Think of AI speed like different race cars. TTFT is how fast it starts moving. TPS is its top speed while racing. LATENCY is how long before it even gets to the starting line. TPM and RPM are like fuel limits - you can only go so far before refilling. SSE is like watching the race live on TV instead of waiting for a replay!" },
+            
+            // Section 5: Building Websites (26-32)
+            { section: "Building Websites", acronym: "HTML", definition: "HyperText Markup Language", usage: "The skeleton of a website - the structure and bones, like the frame of a house", theme: "theme-websites", icon: "🏗️" },
+            { section: "Building Websites", acronym: "CSS", definition: "Cascading Style Sheets", usage: "The paint and decoration - makes websites pretty with colors, fonts, and layouts", theme: "theme-websites", icon: "🎨" },
+            { section: "Building Websites", acronym: "GUI", definition: "Graphical User Interface", usage: "Apps with pictures and buttons you can click - like your phone's home screen", theme: "theme-websites", icon: "📱" },
+            { section: "Building Websites", acronym: "Frontend", definition: "What you see and click", usage: "Everything visible in a website or app - buttons, images, text you interact with", theme: "theme-websites", icon: "🖼️" },
+            { section: "Building Websites", acronym: "Backend", definition: "The behind-the-scenes server code", usage: "The hidden machinery doing the real work - database, logic, processing your requests", theme: "theme-websites", icon: "⚙️" },
+            { section: "Building Websites", acronym: "Framework", definition: "Pre-built code structure", usage: "Like IKEA furniture instructions - a template that makes building faster", theme: "theme-websites", icon: "📐" },
+            { section: "Building Websites", isExplainer: true, theme: "theme-websites", title: "🎈 Building a House", text: "A website is like building a house. HTML is the wooden frame and walls - the structure. CSS is the paint, wallpaper, and decorations. The FRONTEND is everything guests see - the living room, kitchen. The BACKEND is the hidden stuff - plumbing, electrical wires, furnace. A FRAMEWORK is like buying a house kit with instructions. The GUI is the pretty doorknobs and light switches!" },
+
+            // Section 6: Developer Tools (33-42)
+            { section: "Developer Tools", acronym: "IDE", definition: "Integrated Development Environment", usage: "Microsoft Word for programmers - highlights mistakes and suggests fixes as you type code", theme: "theme-dev-tools", icon: "💻" },
+            { section: "Developer Tools", acronym: "CLI", definition: "Command Line Interface", usage: "Black screen where you type commands instead of clicking - like texting with your computer", theme: "theme-dev-tools", icon: "⬛" },
+            { section: "Developer Tools", acronym: "SDK", definition: "Software Development Kit", usage: "Pre-made LEGO blocks of code so you don't build everything from scratch", theme: "theme-dev-tools", icon: "🧩" },
+            { section: "Developer Tools", acronym: "Git", definition: "Version control system", usage: "Takes snapshots of your work so you can go back in time if you mess up", theme: "theme-dev-tools", icon: "⏰" },
+            { section: "Developer Tools", acronym: "Repo", definition: "Repository - a project folder", usage: "Special folder that remembers every change you ever made to files inside", theme: "theme-dev-tools", icon: "📖" },
+            { section: "Developer Tools", acronym: "Commit", definition: "Save a snapshot of your work", usage: "Like saving your game - creates a checkpoint you can return to later", theme: "theme-dev-tools", icon: "💾" },
+            { section: "Developer Tools", acronym: "Push", definition: "Upload your changes to GitHub", usage: "Send your work from your computer to the cloud so others can see it", theme: "theme-dev-tools", icon: "☁️" },
+            { section: "Developer Tools", acronym: "Pull", definition: "Download changes from GitHub", usage: "Get the latest work from teammates onto your computer", theme: "theme-dev-tools", icon: "⬇️" },
+            { section: "Developer Tools", acronym: "Branch", definition: "Separate copy for experiments", usage: "Like a rough draft - experiment without breaking the real thing", theme: "theme-dev-tools", icon: "🌳" },
+            { section: "Developer Tools", acronym: "PR", definition: "Pull Request - ask to merge code", usage: "Asking 'Can I add my changes?' before mixing your work into the main project", theme: "theme-dev-tools", icon: "🙋" },
+            
+            // Section 7: Running Code (43-50)
+            { section: "Running Code", acronym: "ENV", definition: "Environment variables", usage: "Secret passwords stored separately, like keeping keys in your pocket not written down", theme: "theme-environments", icon: "🔐" },
+            { section: "Running Code", acronym: ".env", definition: "Environment config file", usage: "Secret note file with passwords - lives on your computer only, never share", theme: "theme-environments", icon: "🗝️" },
+            { section: "Running Code", acronym: "PATH", definition: "System path variable", usage: "List of places computer looks for programs, like knowing which drawer has forks", theme: "theme-environments", icon: "🗂️" },
+            { section: "Running Code", acronym: "CWD", definition: "Current Working Directory", usage: "Which folder you're in right now - like knowing if you're in kitchen or bedroom", theme: "theme-environments", icon: "🚪" },
+            { section: "Running Code", acronym: "venv", definition: "Virtual environment", usage: "Separate toy box for each project so toys don't get mixed up", theme: "theme-environments", icon: "🧰" },
+            { section: "Running Code", acronym: "Docker", definition: "Containerization platform", usage: "Lunch box that holds your app and everything it needs - works anywhere", theme: "theme-environments", icon: "🍱" },
+            { section: "Running Code", acronym: "VM", definition: "Virtual Machine", usage: "Pretend computer inside your real computer - safe playground for testing", theme: "theme-environments", icon: "🎪" },
+            { section: "Running Code", acronym: "Server", definition: "Computer that runs services", usage: "Like a restaurant kitchen - always running, cooking up responses to requests", theme: "theme-environments", icon: "🏢" },
+            
+            // Section 8: Data & Files (51-57)
+            { section: "Data & Files", acronym: "Database", definition: "Where data lives permanently", usage: "Like a giant organized filing cabinet - stores all your app's information", theme: "theme-data", icon: "🗄️" },
+            { section: "Data & Files", acronym: "Dataset", definition: "Collection of training data", usage: "All the examples used to teach an AI - like homework problems for learning", theme: "theme-data", icon: "📚" },
+            { section: "Data & Files", acronym: "CSV", definition: "Comma-Separated Values", usage: "Spreadsheet saved as text with commas - simple, just data in rows", theme: "theme-data", icon: "📑" },
+            { section: "Data & Files", acronym: "XML", definition: "Extensible Markup Language", usage: "Way to label data with tags like <name>Bob</name> so computers know what's what", theme: "theme-data", icon: "🏷️" },
+            { section: "Data & Files", acronym: "YAML", definition: "YAML Ain't Markup Language", usage: "Settings file using spaces instead of weird brackets - easier to read", theme: "theme-data", icon: "📋" },
+            { section: "Data & Files", acronym: "MD", definition: "Markdown", usage: "Easy text formatting with * and # symbols instead of clicking buttons", theme: "theme-data", icon: "#️⃣" },
+            { section: "Data & Files", acronym: "PDF", definition: "Portable Document Format", usage: "Picture of a document that looks the same everywhere - can't easily edit", theme: "theme-data", icon: "🖼️" },
+            { section: "Data & Files", acronym: "SVG", definition: "Scalable Vector Graphics", usage: "Pictures made of math, not pixels - stays sharp at any size", theme: "theme-data", icon: "📐" }
         ];
 
         const quizzes = [
-            // Quiz after cards 0-3 (LLM, API, MCP, RAG)
             {
-                afterCard: 3,
-                question: "You want AI to search your company documents before answering. Which would you use?",
-                hint: "Think about checking your notes before answering a question",
+                afterCard: 6,
+                question: "You want to give AI your question. What do you call what you type?",
+                hint: "Think about the message you send to start a conversation with AI",
                 options: [
-                    { text: "RAG", correct: true, feedback: "Yes! RAG retrieves relevant documents so AI can answer with your actual data" },
-                    { text: "API", correct: false, feedback: "Not quite. API is how programs communicate, not how AI accesses documents" },
-                    { text: "LLM", correct: false, feedback: "LLM is the AI itself, but it needs RAG to access your specific documents" },
-                    { text: "MCP", correct: false, feedback: "MCP connects to tools, but RAG specifically handles document retrieval" }
+                    { text: "Prompt", correct: true, feedback: "Perfect! Your PROMPT is your question or instruction to the AI. Think of it like asking a friend for help - the way you ask (your prompt) affects the answer you get. Good prompts are clear and specific!" },
+                    { text: "Token", correct: false, feedback: "Tokens are the PIECES the AI breaks your words into, not your whole message. If you type 'Help me code', that whole sentence is your PROMPT. The AI then breaks it into TOKENS (like 'Help', 'me', 'code') to process it." },
+                    { text: "Inference", correct: false, feedback: "INFERENCE is what the AI does AFTER you send your prompt - it's the AI generating the response. Think: you send a PROMPT, the AI does INFERENCE to create an answer." },
+                    { text: "Model", correct: false, feedback: "The MODEL is the AI brain itself, not what you type to it. You send a PROMPT to the MODEL, and the MODEL uses INFERENCE to respond." }
                 ]
             },
-            // Quiz after cards 4-7 (CoT, TTFT, TPS, TPM)
             {
-                afterCard: 7,
-                question: "You're waiting for AI to start responding. Which metric measures this wait time?",
-                hint: "Think about waiting for someone to start talking after you ask them something",
+                afterCard: 12,
+                question: "Your app needs to ask another computer for data. What carries that request?",
+                hint: "Remember the waiter metaphor - who carries your order to the kitchen?",
                 options: [
-                    { text: "TTFT", correct: true, feedback: "Correct! Time To First Token measures how fast the response starts" },
-                    { text: "TPS", correct: false, feedback: "TPS measures speed during the response, not the initial wait" },
-                    { text: "TPM", correct: false, feedback: "TPM is a rate limit, not a speed measurement" },
-                    { text: "CoT", correct: false, feedback: "CoT is a thinking method, not a performance metric" }
-                ]
-            },
-            // Quiz after cards 8-11 (RPM, SSE, SDK, REST)
-            {
-                afterCard: 11,
-                question: "You're building an app that needs to call an AI API. What makes this easier?",
-                hint: "Think about pre-made LEGO blocks instead of building from scratch",
-                options: [
-                    { text: "SDK", correct: true, feedback: "Yes! SDK provides pre-built code so you don't have to write everything from scratch" },
-                    { text: "REST", correct: false, feedback: "REST is the communication style, but SDK makes it easier to use" },
-                    { text: "SSE", correct: false, feedback: "SSE is for streaming responses, not for making API calls easier" },
-                    { text: "RPM", correct: false, feedback: "RPM is a rate limit, not a development tool" }
-                ]
-            },
-            // Quiz after cards 12-15 (JSON, CLI, IDE, CI/CD)
-            {
-                afterCard: 15,
-                question: "You want your code tested automatically before going live. What helps with this?",
-                hint: "Think about a robot that tests and publishes automatically",
-                options: [
-                    { text: "CI/CD", correct: true, feedback: "Correct! CI/CD automatically tests and deploys your code when everything passes" },
-                    { text: "IDE", correct: false, feedback: "IDE helps you write code, but doesn't automate testing and deployment" },
-                    { text: "CLI", correct: false, feedback: "CLI is how you type commands, not an automation system" },
-                    { text: "JSON", correct: false, feedback: "JSON is a data format, not a testing tool" }
-                ]
-            },
-            // Mixed quiz after card 19 (tests cards 0-19)
-            {
-                afterCard: 19,
-                question: "You're experimenting with risky code changes. What keeps your working version safe?",
-                hint: "Think about making a rough draft so you don't mess up the final version",
-                options: [
-                    { text: "Branch", correct: true, feedback: "Yes! Branches let you experiment without affecting the main working code" },
-                    { text: "Repo", correct: false, feedback: "Repo stores everything, but doesn't protect against bad changes" },
-                    { text: "Docker", correct: false, feedback: "Docker packages apps, but doesn't help with code experimentation" },
-                    { text: "venv", correct: false, feedback: "venv isolates Python packages, not code versions" }
-                ]
-            },
-            // Mixed quiz after card 24
-            {
-                afterCard: 24,
-                question: "Your API key needs to stay secret. Where should you store it?",
-                hint: "Think about keeping keys in your pocket instead of writing them down publicly",
-                options: [
-                    { text: ".env file", correct: true, feedback: "Correct! .env keeps secrets on your computer and out of your code" },
-                    { text: "Git repo", correct: false, feedback: "Never put secrets in Git - they'd be visible to everyone" },
-                    { text: "JSON file", correct: false, feedback: "JSON is just a format - secrets need special protection like .env" },
-                    { text: "README", correct: false, feedback: "README is public documentation - never put secrets there" }
-                ]
-            },
-            // Mixed quiz after card 29
-            {
-                afterCard: 29,
-                question: "Two teammates made different changes to the same file. What helps merge them?",
-                hint: "Think about taking snapshots so you can go back in time if you mess up",
-                options: [
-                    { text: "Git", correct: true, feedback: "Yes! Git tracks changes and helps merge different versions together" },
-                    { text: "CLI", correct: false, feedback: "CLI is how you type commands, not a version control system" },
-                    { text: "PATH", correct: false, feedback: "PATH tells your computer where programs are, doesn't handle file merging" },
-                    { text: "CSV", correct: false, feedback: "CSV is a data format, not a collaboration tool" }
-                ]
-            },
-            // Mixed quiz after card 34
-            {
-                afterCard: 34,
-                question: "You want your app to work identically on any computer. What packages everything together?",
-                hint: "Think about a lunch box that holds everything your app needs in one container",
-                options: [
-                    { text: "Docker", correct: true, feedback: "Correct! Docker bundles your app with all its dependencies" },
-                    { text: "VM", correct: false, feedback: "VM simulates a whole computer - Docker is lighter and more portable" },
-                    { text: "venv", correct: false, feedback: "venv only isolates Python packages, not the entire app environment" },
-                    { text: "npm", correct: false, feedback: "npm installs packages but doesn't bundle everything for portability" }
-                ]
-            },
-            // Final mixed quiz
-            {
-                afterCard: 39,
-                question: "AI needs to remember your earlier messages in a conversation. What enables this?",
-                hint: "Think about talking to a friend who doesn't forget what you said earlier",
-                options: [
-                    { text: "Multi-turn", correct: true, feedback: "Yes! Multi-turn conversations maintain context across messages" },
-                    { text: "Cache", correct: false, feedback: "Cache saves repeated prompts for speed, not conversation memory" },
-                    { text: "Context window", correct: false, feedback: "Close! Context is the capacity, but multi-turn is the feature that uses it for conversations" },
-                    { text: "Workflow", correct: false, feedback: "Workflow is for task automation, not conversation memory" }
+                    { text: "API", correct: true, feedback: "Yes! The API is like a waiter carrying your request to another computer (the kitchen) and bringing back the response. Without APIs, your app can't talk to other services. They're the messengers of the internet!" },
+                    { text: "JSON", correct: false, feedback: "JSON is the FORMAT of your message (like how you write your order), but the API is what CARRIES it. Think: JSON is the menu form, API is the waiter who delivers it." },
+                    { text: "Endpoint", correct: false, feedback: "The ENDPOINT is the ADDRESS where you send your request (like the kitchen door), but the API is the system that actually carries your request there and brings back the response." },
+                    { text: "REST", correct: false, feedback: "REST is the STYLE of communication (the polite way to talk), but API is the actual messenger system. REST describes HOW to communicate, API is WHAT does the communicating." }
                 ]
             }
         ];
@@ -369,31 +481,44 @@
         let interval;
         let isQuizMode = false;
         let currentQuiz = null;
-        let totalItems = terms.length + quizzes.length;
 
         function updateDisplay() {
             const flashcard = document.getElementById('flashcard');
             const quiz = document.getElementById('quiz');
             
-            // Check if we should show a quiz
             const quizToShow = quizzes.find(q => q.afterCard === currentIndex - 1);
             
             if (quizToShow && !isQuizMode) {
-                // Show quiz
                 isQuizMode = true;
-                flashcard.style.display = 'none';
-                quiz.style.display = 'block';
+                flashcard.classList.add('hidden');
+                quiz.classList.remove('hidden');
                 showQuiz(quizToShow);
-                clearInterval(interval); // Pause auto-advance
+                clearInterval(interval);
             } else if (!isQuizMode) {
-                // Show flashcard
-                flashcard.style.display = 'block';
-                quiz.style.display = 'none';
+                flashcard.classList.remove('hidden');
+                quiz.classList.add('hidden');
                 
                 const term = terms[currentIndex];
-                document.getElementById('acronym').textContent = term.acronym;
-                document.getElementById('definition').textContent = term.definition;
-                document.getElementById('usage').textContent = term.usage;
+                
+                if (term.isExplainer) {
+                    flashcard.classList.add('explainer-card');
+                    document.getElementById('sectionBadge').textContent = term.title;
+                    document.getElementById('sectionBadge').className = 'section-badge explainer-badge';
+                    document.getElementById('iconContainer').innerHTML = '<div style="font-size: 64px;">🎈</div>';
+                    document.getElementById('acronym').textContent = '';
+                    document.getElementById('definition').textContent = '';
+                    document.getElementById('usage').innerHTML = `<div class="explainer-text">${term.text}</div>`;
+                } else {
+                    flashcard.classList.remove('explainer-card');
+                    document.getElementById('sectionBadge').textContent = term.section;
+                    document.getElementById('sectionBadge').className = 'section-badge';
+                    renderIcon(term.icon, document.getElementById('iconContainer'));
+                    document.getElementById('acronym').textContent = term.acronym;
+                    document.getElementById('definition').textContent = term.definition;
+                    document.getElementById('usage').textContent = term.usage;
+                }
+                
+                document.body.className = term.theme;
             }
             
             updateProgress();
@@ -403,63 +528,71 @@
             currentQuiz = quiz;
             document.getElementById('quizQuestion').textContent = quiz.question;
             document.getElementById('feedback').textContent = '';
-            document.getElementById('hint').style.display = 'none';
-            document.getElementById('hintBtn').style.display = 'inline-block';
+            document.getElementById('hint').classList.add('hidden');
+            document.getElementById('hintBtn').classList.remove('hidden');
             
             const optionsContainer = document.getElementById('quizOptions');
             optionsContainer.innerHTML = '';
             
-            quiz.options.forEach((option, index) => {
+            quiz.options.forEach((option) => {
+                const matchingTerm = terms.find(t => t.acronym === option.text);
+                
                 const btn = document.createElement('div');
                 btn.className = 'quiz-option';
-                btn.textContent = option.text;
+                
+                const iconDiv = document.createElement('div');
+                iconDiv.className = 'quiz-option-icon';
+                if (matchingTerm) {
+                    renderIcon(matchingTerm.icon, iconDiv);
+                }
+                
+                const textDiv = document.createElement('div');
+                textDiv.className = 'quiz-option-text';
+                textDiv.textContent = option.text;
+                
+                btn.appendChild(iconDiv);
+                btn.appendChild(textDiv);
                 btn.onclick = () => answerQuiz(option, btn, quiz.options);
                 optionsContainer.appendChild(btn);
             });
         }
 
         function showHint() {
-            const hintElement = document.getElementById('hint');
-            const hintBtn = document.getElementById('hintBtn');
-            
-            hintElement.textContent = currentQuiz.hint;
-            hintElement.style.display = 'block';
-            hintBtn.style.display = 'none';
+            document.getElementById('hint').textContent = currentQuiz.hint;
+            document.getElementById('hint').classList.remove('hidden');
+            document.getElementById('hintBtn').classList.add('hidden');
         }
 
         function answerQuiz(selectedOption, selectedBtn, allOptions) {
-            // Disable all options
             document.querySelectorAll('.quiz-option').forEach(btn => {
                 btn.classList.add('disabled');
             });
             
-            // Show correct/incorrect
             if (selectedOption.correct) {
                 selectedBtn.classList.add('correct');
             } else {
                 selectedBtn.classList.add('incorrect');
-                // Highlight correct answer
-                document.querySelectorAll('.quiz-option').forEach((btn, idx) => {
-                    if (allOptions[idx].correct) {
+                document.querySelectorAll('.quiz-option').forEach((btn) => {
+                    const optionText = btn.querySelector('.quiz-option-text').textContent;
+                    const correctOption = allOptions.find(o => o.correct);
+                    if (optionText === correctOption.text) {
                         btn.classList.add('correct');
                     }
                 });
             }
             
-            // Show feedback
             document.getElementById('feedback').textContent = selectedOption.feedback;
             
-            // Auto-continue after 3 seconds
             setTimeout(() => {
                 skipQuiz();
-            }, 3000);
+            }, 5000);
         }
 
         function skipQuiz() {
             isQuizMode = false;
             currentIndex++;
             if (currentIndex >= terms.length) {
-                currentIndex = 0; // Loop back
+                currentIndex = 0;
             }
             updateDisplay();
             if (!isPaused) {
@@ -469,7 +602,7 @@
 
         function updateProgress() {
             const displayIndex = currentIndex + 1;
-            document.getElementById('progress').textContent = `${displayIndex} / ${terms.length}`;
+            document.getElementById('progress').textContent = `${displayIndex}/58`;
         }
 
         function nextItem() {
@@ -496,7 +629,7 @@
         function togglePause() {
             isPaused = !isPaused;
             const btn = document.getElementById('pauseBtn');
-            btn.textContent = isPaused ? 'Resume' : 'Pause';
+            btn.textContent = isPaused ? '▶' : '⏸';
             
             if (isPaused) {
                 clearInterval(interval);
@@ -514,7 +647,6 @@
             }, 15000);
         }
 
-        // Keyboard controls
         document.addEventListener('keydown', (e) => {
             if (e.key === 'ArrowRight' || e.key === ' ') {
                 e.preventDefault();
@@ -527,7 +659,6 @@
             }
         });
 
-        // Start
         updateDisplay();
         startInterval();
     </script>
