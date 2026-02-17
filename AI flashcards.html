@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Acronym Screensaver</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            color: white;
+        }
+        
+        .container {
+            text-align: center;
+            padding: 40px;
+            animation: fadeIn 1s ease-in;
+        }
+        
+        .acronym {
+            font-size: 120px;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-shadow: 0 4px 20px rgba(0,0,0,0.3);
+            animation: pulse 2s ease-in-out infinite;
+        }
+        
+        .definition {
+            font-size: 36px;
+            font-weight: 300;
+            max-width: 800px;
+            margin: 0 auto 30px auto;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+        
+        .usage {
+            font-size: 20px;
+            font-weight: 300;
+            max-width: 900px;
+            margin: 0 auto;
+            opacity: 0.9;
+            line-height: 1.6;
+        }
+        
+        .progress {
+            position: fixed;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 18px;
+            opacity: 0.7;
+        }
+        
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        
+        button {
+            background: rgba(255,255,255,0.2);
+            border: 2px solid white;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+        }
+        
+        button:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.05);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="acronym" id="acronym">LLM</div>
+        <div class="definition" id="definition">Large Language Model</div>
+        <div class="usage" id="usage">The AI system that powers Claude - processes text input and generates responses</div>
+    </div>
+    
+    <div class="progress" id="progress">1 / 40</div>
+    
+    <div class="controls">
+        <button onclick="prevTerm()">← Prev</button>
+        <button onclick="togglePause()" id="pauseBtn">Pause</button>
+        <button onclick="nextTerm()">Next →</button>
+    </div>
+
+    <script>
+        const terms = [
+            { acronym: "LLM", definition: "Large Language Model", usage: "A computer brain trained by reading billions of books and websites to chat like a human" },
+            { acronym: "API", definition: "Application Programming Interface", usage: "Like a waiter - you ask for something, they bring it from the kitchen (another computer)" },
+            { acronym: "MCP", definition: "Model Context Protocol", usage: "Lets AI use tools like opening your email or calendar, like giving it hands to help you" },
+            { acronym: "RAG", definition: "Retrieval-Augmented Generation", usage: "AI looks up answers in your documents first, like checking your notes before answering" },
+            { acronym: "CoT", definition: "Chain of Thought", usage: "AI explains its thinking step-by-step, like showing your work on a math problem" },
+            { acronym: "TTFT", definition: "Time To First Token", usage: "How fast the first word appears after you hit send - like waiting for someone to start talking" },
+            { acronym: "TPS", definition: "Tokens Per Second", usage: "How many words pop up each second - faster means less staring at a blank screen" },
+            { acronym: "TPM", definition: "Tokens Per Minute", usage: "Maximum words you can use per minute - like having 10,000 Scrabble tiles to use each minute" },
+            { acronym: "RPM", definition: "Requests Per Minute", usage: "How many questions you can ask per minute - like limits on raising your hand in class" },
+            { acronym: "SSE", definition: "Server-Sent Events", usage: "Words appear one at a time as AI thinks, not all at once when it's done" },
+            { acronym: "SDK", definition: "Software Development Kit", usage: "Pre-made LEGO blocks of code so you don't build everything from scratch" },
+            { acronym: "REST", definition: "Representational State Transfer", usage: "Standard way computers ask each other for stuff - like saying 'please' and 'thank you'" },
+            { acronym: "JSON", definition: "JavaScript Object Notation", usage: "Way to organize information with labels, like putting food in labeled containers" },
+            { acronym: "CLI", definition: "Command Line Interface", usage: "Black screen where you type commands like 'open file' instead of clicking icons" },
+            { acronym: "IDE", definition: "Integrated Development Environment", usage: "Microsoft Word for programmers - highlights mistakes and suggests fixes as you type code" },
+            { acronym: "CI/CD", definition: "Continuous Integration/Continuous Deployment", usage: "Robot that tests your app and publishes it automatically when everything works" },
+            { acronym: "GUI", definition: "Graphical User Interface", usage: "Apps with pictures and buttons you can click - like your phone's home screen" },
+            { acronym: "ENV", definition: "Environment variables", usage: "Secret passwords stored separately from your code, like keeping keys in your pocket not written down" },
+            { acronym: ".env", definition: "Environment configuration file", usage: "Secret note file with passwords - lives on your computer only, never show anyone" },
+            { acronym: "PATH", definition: "System path variable", usage: "List of places computer looks for programs, like knowing which drawer has the forks" },
+            { acronym: "CWD", definition: "Current Working Directory", usage: "Which folder you're in right now - like knowing if you're in the kitchen or bedroom" },
+            { acronym: "venv", definition: "Virtual environment", usage: "Separate toy box for each project so the toys don't get mixed up" },
+            { acronym: "Docker", definition: "Containerization platform", usage: "Lunch box that holds your app and everything it needs - works anywhere you open it" },
+            { acronym: "VM", definition: "Virtual Machine", usage: "Pretend computer inside your real computer - safe playground to test dangerous stuff" },
+            { acronym: "CSV", definition: "Comma-Separated Values", usage: "Spreadsheet saved as plain text with commas between columns - really simple, just data" },
+            { acronym: "XML", definition: "Extensible Markup Language", usage: "Way to label data with tags like <name>Bob</name> so computers know what's what" },
+            { acronym: "YAML", definition: "YAML Ain't Markup Language", usage: "Settings file that uses spaces like paragraphs instead of weird brackets" },
+            { acronym: "MD", definition: "Markdown", usage: "Easy way to make text bold or big using * and # symbols instead of clicking buttons" },
+            { acronym: "PDF", definition: "Portable Document Format", usage: "Picture of a document that looks the same on everyone's computer - can't easily edit it" },
+            { acronym: "Git", definition: "Version control system", usage: "Takes snapshots of your work so you can go back in time if you mess up" },
+            { acronym: "Repo", definition: "Repository", usage: "Special folder that remembers every change you ever made to the files inside" },
+            { acronym: "npm", definition: "Node Package Manager", usage: "App store for JavaScript code pieces - type one command and it downloads what you need" },
+            { acronym: "pip", definition: "Python Package Installer", usage: "App store for Python code pieces - downloads helpful tools other people made" },
+            { acronym: "PR", definition: "Pull Request", usage: "Asking 'Can I add my changes?' before mixing your work into the main project" },
+            { acronym: "Branch", definition: "Code version branch", usage: "Copy of your project where you experiment without breaking the real one - like a rough draft" },
+            { acronym: "Latency", definition: "Response delay", usage: "Waiting time between clicking and seeing results - like lag in video games" },
+            { acronym: "Context", definition: "Input size limit (context window)", usage: "How much the AI can remember at once - like how many things you can hold in your arms" },
+            { acronym: "Cache", definition: "Reusing prompt prefixes (prompt caching)", usage: "Remembering repeated parts so it doesn't re-read them - like skipping a movie intro you've seen" },
+            { acronym: "Multi-turn", definition: "Back-and-forth conversations", usage: "AI remembers what you said earlier, like talking to a friend who doesn't forget everything" },
+            { acronym: "Workflow", definition: "Automated task sequence", usage: "Robot instructions that do boring tasks automatically - like a morning routine checklist" }
+        ];
+
+        let currentIndex = 0;
+        let isPaused = false;
+        let interval;
+
+        function updateDisplay() {
+            const term = terms[currentIndex];
+            document.getElementById('acronym').textContent = term.acronym;
+            document.getElementById('definition').textContent = term.definition;
+            document.getElementById('usage').textContent = term.usage;
+            document.getElementById('progress').textContent = `${currentIndex + 1} / ${terms.length}`;
+        }
+
+        function nextTerm() {
+            currentIndex = (currentIndex + 1) % terms.length;
+            updateDisplay();
+        }
+
+        function prevTerm() {
+            currentIndex = (currentIndex - 1 + terms.length) % terms.length;
+            updateDisplay();
+        }
+
+        function togglePause() {
+            isPaused = !isPaused;
+            const btn = document.getElementById('pauseBtn');
+            btn.textContent = isPaused ? 'Resume' : 'Pause';
+            
+            if (isPaused) {
+                clearInterval(interval);
+            } else {
+                startInterval();
+            }
+        }
+
+        function startInterval() {
+            interval = setInterval(nextTerm, 15000);
+        }
+
+        // Keyboard controls
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') {
+                nextTerm();
+            } else if (e.key === 'ArrowLeft') {
+                prevTerm();
+            } else if (e.key === 'p' || e.key === 'P') {
+                togglePause();
+            }
+        });
+
+        // Start the screensaver
+        updateDisplay();
+        startInterval();
+    </script>
+</body>
+</html>
